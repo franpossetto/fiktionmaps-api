@@ -1,6 +1,10 @@
 package com.mapToFiction.mapToFiction.model;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.GenerationType;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -8,7 +12,8 @@ import java.util.List;
 public class Fiction {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     private String name;
 
@@ -16,36 +21,18 @@ public class Fiction {
     private Type type;
 
     @OneToMany(mappedBy = "fiction")
-    private List<Scene> scenes;
+    private List<Episode> episodes = new ArrayList<Episode>();
 
-    public String getId() {
-        return id;
-    }
+    @OneToMany(mappedBy = "fiction")
+    private List<Scene> scenes = new ArrayList<Scene>();
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    @OneToMany(mappedBy = "fiction")
+    private List<Map> maps = new ArrayList<Map>();
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
-    }
     public enum Type {
         MOVIE, TV_SHOW, BOOK, SONG
     }
-
-    public Fiction(){}
-
-
+    public enum Provider {
+        OMDB_API, TVDB_API, CUSTOM
+    }
 }

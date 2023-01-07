@@ -10,12 +10,19 @@ public class Map {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
-    private String city;
+    private Long id;
+
+    private String name;
+    private String description;
+
 
     @ManyToOne()
     @JoinColumn(name = "fiction_id")
     private Fiction fiction;
+
+    @ManyToOne()
+    @JoinColumn(name = "city_id")
+    private City city;
 
     @OneToMany(mappedBy = "map")
     private List<Scene> scenes;
