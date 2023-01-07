@@ -2,7 +2,10 @@ package com.mapToFiction.mapToFiction.service.impl;
 import com.mapToFiction.mapToFiction.model.Fiction;
 import com.mapToFiction.mapToFiction.repository.FictionRepository;
 import com.mapToFiction.mapToFiction.service.FictionService;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -14,27 +17,27 @@ public class FictionServiceImpl implements FictionService {
     }
 
     @Override
-    public List<Fiction> getAllFictions() {
+    public List<Fiction> getAll() {
         return fictionRepository.findAll();
     }
 
     @Override
-    public Fiction getFictionById(String id) {
+    public Fiction getById(Long id) {
         return fictionRepository.findById(id).orElse(null);
     }
 
     @Override
-    public Fiction createFiction(Fiction fiction) {
+    public Fiction create(Fiction fiction) {
         return fictionRepository.save(fiction);
     }
 
     @Override
-    public Fiction updateFiction(Fiction fiction) {
+    public Fiction update(Fiction fiction) {
         return fictionRepository.save(fiction);
     }
 
     @Override
-    public void deleteFiction(String id) {
+    public void delete(Long id) {
         fictionRepository.deleteById(id);
     }
 }
