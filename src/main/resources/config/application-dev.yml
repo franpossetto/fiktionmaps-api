@@ -1,2 +1,5 @@
 google_maps:
   api_key: ${GOOGLE_MAPS_API_KEY}
+
+omdb:
+  api_key: ${OMDB_API_KEY}
