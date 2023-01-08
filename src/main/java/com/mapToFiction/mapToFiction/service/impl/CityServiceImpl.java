@@ -7,6 +7,8 @@ import com.mapToFiction.mapToFiction.service.CityService;
 import com.mapToFiction.mapToFiction.service.GoogleMapsService;
 import com.mapToFiction.mapToFiction.service.errors.CityErrorEnum;
 import com.mapToFiction.mapToFiction.service.errors.CityErrorHandler;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -23,14 +25,9 @@ public class CityServiceImpl implements CityService{
 
     @Override
     public ResponseEntity<Void> add(String cityData) {
-        try {
-            ResultsDTO resultsDto = googleMapsService.getPlace(cityData);
-            City city = new City(resultsDto.formattedAddress,"country", resultsDto.placeId, City.Provider.GOOGLE_MAPS);
-            cityRepository.save(city);
-            return ResponseEntity.ok().build();
-        } catch(Error e) {
-             CityErrorHandler.handleError(CityErrorEnum.CITY_ALREADY_EXISTS);
-            return ResponseEntity.badRequest().build();
-        }
+        ResultsDTO resultsDto = googleMapsService.getPlace(cityData);
+        City city = new City(resultsDto.formattedAddress,"country", resultsDto.placeId, City.Provider.GOOGLE_MAPS);
+        cityRepository.save(city);
+        return ResponseEntity.ok().build();
     }
 }

@@ -30,7 +30,6 @@ public class GoogleMapsServiceImpl implements GoogleMapsService {
             JsonNode root = mapper.readTree(response.getBody());
             JsonNode resp = root.get("results");
             ResultsDTO result = mapper.treeToValue(resp.get(0), ResultsDTO.class);
-
             return result;
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
