@@ -8,4 +8,6 @@ public interface FictionService {
     void delete(Long id);
     List<Fiction> getAll();
     Fiction getById(Long id);
+    Fiction findByName(String name);
+
 }

@@ -40,4 +40,9 @@ public class FictionServiceImpl implements FictionService {
     public void delete(Long id) {
         fictionRepository.deleteById(id);
     }
+
+    @Override
+    public Fiction findByName(String name) {
+        return fictionRepository.findByName(name);
+    }
 }

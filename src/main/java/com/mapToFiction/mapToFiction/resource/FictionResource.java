@@ -1,48 +1,77 @@
 package com.mapToFiction.mapToFiction.resource;
 
-import com.mapToFiction.mapToFiction.model.Fiction;
-import com.mapToFiction.mapToFiction.service.FictionService;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.mapToFiction.mapToFiction.model.*;
+import com.mapToFiction.mapToFiction.model.dto.gmaps.ResultsDTO;
+import com.mapToFiction.mapToFiction.service.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/fictions")
 public class FictionResource {
-    private final FictionService fictionService;
-    public FictionResource(FictionService fictionService) {
-        this.fictionService = fictionService;
-    }
+        private final LocationService locationService;
+        private final FictionService fictionService;
+        private final SceneService sceneService;
+        private final GoogleMapsService googleMapsService;
 
-    @GetMapping
-    @Transactional
-    public List<Fiction> getAllFictions() {
-        return fictionService.getAll();
-    }
-
-    @GetMapping("/{id}")
-    public Fiction getFictionById(@PathVariable Long id) {
-        return fictionService.getById(id);
-    }
+        public FictionResource(LocationService locationService, FictionService fictionService, SceneService sceneService, GoogleMapsService googleMapsService) {
+            this.locationService = locationService;
+            this.fictionService = fictionService;
+            this.sceneService = sceneService;
+            this.googleMapsService = googleMapsService;
+        }
 
     @PostMapping
+    @CrossOrigin
     @ResponseStatus(HttpStatus.CREATED)
-    public Fiction createFiction(@RequestBody Fiction fiction) {
-        return fictionService.create(fiction);
-    }
+    public ResponseEntity addFictionLocation(@RequestBody JsonNode fictionMap) {
 
-    @PutMapping("/{id}")
-    public Fiction updateFiction(@PathVariable String id, @RequestBody Fiction fiction) {
-        return fictionService.update(fiction);
-    }
+        JsonNode fictionJsonNode = fictionMap.get("fiction");
+        JsonNode locationJsonNode = fictionMap.get("location");
+        String responseMessage = "Todo ok. ";
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteFiction(@PathVariable Long id) {
-        fictionService.delete(id);
+        if (fictionJsonNode == null || locationJsonNode == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Fiction or location not found in request");
+        }
+
+        Fiction fiction = new Fiction(fictionJsonNode);
+
+        if (fictionService.findByName(fiction.getName()) == null) {
+            fictionService.create(fiction);
+            responseMessage += "Fiction created: " + fiction.getName() + ". ";
+        }
+
+        List<Scene> scenes = fiction.getScenes();
+        if (scenes != null && !scenes.isEmpty()) {
+            Scene scene = scenes.get(0);
+            if (fiction.getId() != null) {
+                scene.setFiction(fiction);
+            } else {
+                Fiction persistedFiction = fictionService.findByName(fiction.getName());
+                if (persistedFiction != null) {
+                    scene.setFiction(persistedFiction);
+                } else {
+                    scene.setFiction(fiction);
+                }
+            }
+            sceneService.create(scene);
+            responseMessage += "Scene created: " + scene.getName() + ". ";
+        }
+
+        Location location = new Location(locationJsonNode);
+        Location loc = locationService.findByPlaceId(location.getPlace_id());
+
+        if (loc == null) {
+            loc = locationService.create(location);
+            responseMessage += "Location created: " + loc.getFormatted_address() + ". ";
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseMessage);
+
     }
 }
+
