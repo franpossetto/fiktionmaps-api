@@ -18,11 +18,14 @@ public class FictionResource {
         private final SceneService sceneService;
         private final GoogleMapsService googleMapsService;
 
-        public FictionResource(LocationService locationService, FictionService fictionService, SceneService sceneService, GoogleMapsService googleMapsService) {
+        private final RowAPIDataService rowAPIDataService;
+
+        public FictionResource(LocationService locationService, FictionService fictionService, SceneService sceneService, GoogleMapsService googleMapsService, RowAPIDataService rowAPIDataService) {
             this.locationService = locationService;
             this.fictionService = fictionService;
             this.sceneService = sceneService;
             this.googleMapsService = googleMapsService;
+            this.rowAPIDataService = rowAPIDataService;
         }
 
     @PostMapping
@@ -32,6 +35,7 @@ public class FictionResource {
 
         JsonNode fictionJsonNode = fictionMap.get("fiction");
         JsonNode locationJsonNode = fictionMap.get("location");
+        JsonNode rowAPIDataJsonNode = fictionMap.get("row");
         String responseMessage = "Todo ok. ";
 
         if (fictionJsonNode == null || locationJsonNode == null) {
@@ -69,6 +73,9 @@ public class FictionResource {
             loc = locationService.create(location);
             responseMessage += "Location created: " + loc.getFormatted_address() + ". ";
         }
+
+        RowAPIData rowAPIData = new RowAPIData(rowAPIDataJsonNode);
+        rowAPIDataService.create(rowAPIData);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseMessage);
 
