@@ -1,33 +1,46 @@
 package com.mapToFiction.mapToFiction.service.impl;
 
 import com.mapToFiction.mapToFiction.model.City;
-import com.mapToFiction.mapToFiction.model.dto.gmaps.ResultsDTO;
 import com.mapToFiction.mapToFiction.repository.CityRepository;
+import com.mapToFiction.mapToFiction.repository.FictionRepository;
 import com.mapToFiction.mapToFiction.service.CityService;
-import com.mapToFiction.mapToFiction.service.GoogleMapsService;
-import com.mapToFiction.mapToFiction.service.errors.CityErrorEnum;
-import com.mapToFiction.mapToFiction.service.errors.CityErrorHandler;
-import org.hibernate.exception.ConstraintViolationException;
-import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 @Service
-public class CityServiceImpl implements CityService{
+public class CityServiceImpl implements CityService {
 
-    public final CityRepository cityRepository;
-    public final GoogleMapsService googleMapsService;
+    private final CityRepository cityRepository;
 
-    public CityServiceImpl(CityRepository cityRepository, GoogleMapsService googleMapsService) {
+    public CityServiceImpl(CityRepository cityRepository) {
         this.cityRepository = cityRepository;
-        this.googleMapsService = googleMapsService;
     }
 
     @Override
-    public ResponseEntity<Void> add(String cityData) {
-        ResultsDTO resultsDto = googleMapsService.getPlace(cityData);
-        City city = new City(resultsDto.formattedAddress,"country", resultsDto.placeId, City.Provider.GOOGLE_MAPS);
-        cityRepository.save(city);
-        return ResponseEntity.ok().build();
+    public City create(City city) {
+        return cityRepository.save(city);
     }
+
+    @Override
+    public List<City> getAll() {
+        return cityRepository.findAll();
+    }
+
+    public City updateCity(Long id, City cityUpdate){
+        return cityRepository.findById(id)
+                .map(city -> {
+                    city.setName(cityUpdate.getName());
+                    // actualizar otros campos aquí
+                    return cityRepository.save(city);
+                })
+                .orElseThrow(() -> new IllegalArgumentException("City not found with id " + id));
+    }
+
+    public ResponseEntity<Void> deleteCity(Long id) {
+        cityRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }

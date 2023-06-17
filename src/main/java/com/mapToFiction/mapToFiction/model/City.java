@@ -1,31 +1,43 @@
 package com.mapToFiction.mapToFiction.model;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
-@Table(name= "cities", uniqueConstraints = @UniqueConstraint(columnNames = "placeId"))
+@Table(name = "cities")
 public class City {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String country;
     private String name;
     private String placeId;
+    private Double latitude;
+    private Double longitude;
+    private String provider;
+    private String code;
 
-    @Enumerated(EnumType.STRING)
-    private Provider provider;
+    public City() {
 
-    // A city can have many maps.
-    @OneToMany(mappedBy = "city")
-    private List<Map> maps;
+    }
 
-    // A city can have many maps.
-    @OneToMany(mappedBy = "city")
-    private List<Location> locations;
+    public City(String name, String placeId, Double latitude, Double longitude, String provider, String code) {
+        this.name = name;
+        this.placeId = placeId;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.provider = provider;
+        this.code = code;
+    }
 
-    public enum Provider {
-        GOOGLE_MAPS, MAP_BOX, OPEN_STREET_MAP, CUSTOM
+    public City(JsonNode city) {
+        this.name = city.get("name").asText();
+        this.placeId = city.get("placeId").asText();
+        this.latitude = city.get("latitude").asDouble();
+        this.longitude = city.get("longitude").asDouble();
+        this.provider = city.get("provider").asText();
+        this.code = city.get("code").asText();
     }
 
     public Long getId() {
@@ -36,14 +48,6 @@ public class City {
         this.id = id;
     }
 
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
     public String getName() {
         return name;
     }
@@ -52,7 +56,6 @@ public class City {
         this.name = name;
     }
 
-    @Column(name = "place_id")
     public String getPlaceId() {
         return placeId;
     }
@@ -61,36 +64,35 @@ public class City {
         this.placeId = placeId;
     }
 
-    public Provider getProvider() {
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getProvider() {
         return provider;
     }
 
-    public void setProvider(Provider provider) {
+    public void setProvider(String provider) {
         this.provider = provider;
     }
 
-    public List<Map> getMaps() {
-        return maps;
+    public String getCode() {
+        return code;
     }
 
-    public void setMaps(List<Map> maps) {
-        this.maps = maps;
-    }
-
-    public List<Location> getLocations() {
-        return locations;
-    }
-
-    public void setLocations(List<Location> locations) {
-        this.locations = locations;
-    }
-
-    public City(){};
-
-    public City(String name, String country, String placeId, Provider provider) {
-        this.name = name;
-        this.country = country;
-        this.placeId = placeId;
-        this.provider = provider;
+    public void setCode(String code) {
+        this.code = code;
     }
 }
