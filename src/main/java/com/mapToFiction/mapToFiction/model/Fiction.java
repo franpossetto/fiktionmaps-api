@@ -1,4 +1,7 @@
 package com.mapToFiction.mapToFiction.model;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -8,6 +11,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "fictions")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Fiction {
 
     public enum Type {
@@ -24,8 +30,8 @@ public class Fiction {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    @OneToMany(mappedBy = "fiction")
-    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany( mappedBy = "fiction", cascade = CascadeType.ALL)
+    //@JsonManagedReference(value = "fiction-scene")
     private List<Scene> scenes = new ArrayList<>();
 
     public Fiction() {}
@@ -41,36 +47,41 @@ public class Fiction {
             this.scenes.add(scene);
         }
     }
-
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public Type getType() {
         return type;
     }
-
     public void setType(Type type) {
         this.type = type;
     }
-
     public List<Scene> getScenes() {
         return scenes;
     }
-
     public void setScenes(List<Scene> scenes) {
         this.scenes = scenes;
+    }
+    public void addScenes(List<Scene> scenes) {
+        if (this.scenes == null) {
+            this.scenes = new ArrayList<>();
+        }
+        this.scenes.addAll(scenes);
+    }
+    public void addScene(Scene scene) {
+        if (this.scenes == null) {
+            this.scenes = new ArrayList<>();
+        }
+        this.scenes.add(scene);
+
     }
 }

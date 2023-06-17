@@ -1,5 +1,4 @@
 package com.mapToFiction.mapToFiction.service.impl;
-
 import com.mapToFiction.mapToFiction.model.Scene;
 import com.mapToFiction.mapToFiction.repository.SceneRepository;
 import com.mapToFiction.mapToFiction.service.SceneService;
@@ -16,5 +15,6 @@ public class SceneServiceImpl implements SceneService {
     public Scene create(Scene scene) {
         return sceneRepository.save(scene);
     }
+
 
 }

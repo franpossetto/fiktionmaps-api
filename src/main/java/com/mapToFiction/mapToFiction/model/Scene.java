@@ -1,11 +1,20 @@
 package com.mapToFiction.mapToFiction.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "scenes")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Scene {
 
     public enum SegmentType {
@@ -27,10 +36,12 @@ public class Scene {
 
     @ManyToOne
     @JoinColumn(name = "fiction_id")
+    //@JsonBackReference(value = "fiction-scene")
     private Fiction fiction;
 
     @ManyToOne
     @JoinColumn(name = "location_id")
+    //@JsonBackReference(value = "location-scene")
     private Location location;
 
     public Scene() {}

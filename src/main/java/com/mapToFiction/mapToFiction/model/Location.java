@@ -1,8 +1,11 @@
 package com.mapToFiction.mapToFiction.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,8 +26,9 @@ public class Location {
     private Double longitude;
     private String provider;
 
-    @OneToMany(mappedBy = "location")
-    private List<Scene> scenes;
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Scene> scenes = new ArrayList<>();
 
     public Location() {}
 
