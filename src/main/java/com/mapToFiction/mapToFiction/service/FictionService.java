@@ -7,7 +7,7 @@ import com.mapToFiction.mapToFiction.service.dto.FictionDTO;
 import java.util.List;
 
 public interface FictionService {
-    Fiction create(Fiction fiction);
+    FictionDTO create(FictionDTO fiction);
     Fiction update(Fiction fiction);
     Fiction update(Long id, Fiction fiction);
     void delete(Long id);

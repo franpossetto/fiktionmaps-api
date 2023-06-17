@@ -43,17 +43,13 @@ public class FictionServiceImpl implements FictionService {
         return fictionRepository.findById(id).orElse(null);
     }
 
-    @Override
-    public Fiction create(Fiction fiction) {
-        return fictionRepository.save(fiction);
-    }
 
-//    @Override
-//    public FictionDTO create(FictionDTO fictionDTO) {
-//        Fiction fiction = fictionMapper.toEntity(fictionDTO);
-//        Fiction savedFiction = fictionRepository.save(fiction);
-//        return fictionMapper.toDto(savedFiction);
-//    }
+    @Override
+    public FictionDTO create(FictionDTO fictionDTO) {
+        Fiction fiction = fictionMapper.toEntity(fictionDTO);
+        Fiction savedFiction = fictionRepository.save(fiction);
+        return fictionMapper.toDto(savedFiction);
+    }
 
     @Override
     public Fiction update(Fiction fiction) {
