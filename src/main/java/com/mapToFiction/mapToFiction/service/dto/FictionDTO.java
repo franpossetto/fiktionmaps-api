@@ -16,6 +16,7 @@ public class FictionDTO {
     private String name;
     private Fiction.Type type;
     private List<SceneDTO> scenes;
+    private String fictionType;
 }
 
 

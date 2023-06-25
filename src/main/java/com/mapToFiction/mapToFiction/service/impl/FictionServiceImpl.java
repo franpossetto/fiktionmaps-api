@@ -1,5 +1,6 @@
 package com.mapToFiction.mapToFiction.service.impl;
 import com.mapToFiction.mapToFiction.mapper.FictionMapper;
+import com.mapToFiction.mapToFiction.mapper.SceneMapper;
 import com.mapToFiction.mapToFiction.model.Fiction;
 import com.mapToFiction.mapToFiction.model.Location;
 import com.mapToFiction.mapToFiction.model.Scene;
@@ -8,6 +9,7 @@ import com.mapToFiction.mapToFiction.repository.LocationRepository;
 import com.mapToFiction.mapToFiction.repository.SceneRepository;
 import com.mapToFiction.mapToFiction.service.FictionService;
 import com.mapToFiction.mapToFiction.service.dto.FictionDTO;
+import com.mapToFiction.mapToFiction.service.dto.SceneDTO;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,20 +24,23 @@ public class FictionServiceImpl implements FictionService {
     private final FictionRepository fictionRepository;
     private final SceneRepository sceneRepository;
     private final LocationRepository locationRepository;
-
     private final FictionMapper fictionMapper;
+    private final SceneMapper sceneMapper;
 
 
-    public FictionServiceImpl(FictionRepository fictionRepository, SceneRepository sceneRepository, LocationRepository locationRepository, FictionMapper fictionMapper) {
+    public FictionServiceImpl(FictionRepository fictionRepository, SceneRepository sceneRepository, LocationRepository locationRepository, FictionMapper fictionMapper, SceneMapper sceneMapper) {
         this.fictionRepository = fictionRepository;
         this.sceneRepository = sceneRepository;
         this.locationRepository = locationRepository;
         this.fictionMapper = fictionMapper;
+        this.sceneMapper = sceneMapper;
+
     }
 
     @Override
-    public List<Fiction> getAll() {
-        return fictionRepository.findAll();
+    public List<FictionDTO> getAll() {
+        List<Fiction> fictions = fictionRepository.findAll();
+        return fictionMapper.toDtoList(fictions);
     }
 
     @Override
@@ -45,8 +50,8 @@ public class FictionServiceImpl implements FictionService {
 
 
     @Override
-    public FictionDTO create(FictionDTO fictionDTO) {
-        Fiction fiction = fictionMapper.toEntity(fictionDTO);
+    public FictionDTO create(FictionDTO fictionDto) {
+        Fiction fiction = fictionMapper.toEntity(fictionDto);
         Fiction savedFiction = fictionRepository.save(fiction);
         return fictionMapper.toDto(savedFiction);
     }
@@ -69,25 +74,24 @@ public class FictionServiceImpl implements FictionService {
     }
 
     @Override
-    public void delete(Long id) {
-        fictionRepository.deleteById(id);
-    }
-
-    @Override
     public Fiction findByName(String name) {
         return fictionRepository.findByName(name);
     }
 
     @Override
-    public Fiction addScene(Long id, Scene scene){
+    public FictionDTO addScene(Long id, SceneDTO sceneDto){
+
         Optional<Fiction> fictionOpt = fictionRepository.findById(id);
         if (!fictionOpt.isPresent()) {
             throw new NoSuchElementException("No Fiction found with id " + id);
         }
         Fiction fiction = fictionOpt.get();
+
+        Scene scene = sceneMapper.toEntity(sceneDto);
         scene.setFiction(fiction);
         sceneRepository.save(scene);
-        return fiction;
+
+        return fictionMapper.toDto(fiction);
     }
 
     @Override
@@ -107,5 +111,10 @@ public class FictionServiceImpl implements FictionService {
     @Override
     public void deleteFiction(Long id){
         fictionRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean exists(String name) {
+        return fictionRepository.existsByName(name);
     }
 }
