@@ -12,9 +12,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "scenes")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class Scene {
 
     public enum SegmentType {
@@ -22,7 +19,8 @@ public class Scene {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "locationSeq")
+    @SequenceGenerator(name = "locationSeq", initialValue = 1, allocationSize = 1)
     private Long id;
 
     private String name;
@@ -36,12 +34,10 @@ public class Scene {
 
     @ManyToOne
     @JoinColumn(name = "fiction_id")
-    //@JsonBackReference(value = "fiction-scene")
     private Fiction fiction;
 
     @ManyToOne
     @JoinColumn(name = "location_id")
-    //@JsonBackReference(value = "location-scene")
     private Location location;
 
     public Scene() {}

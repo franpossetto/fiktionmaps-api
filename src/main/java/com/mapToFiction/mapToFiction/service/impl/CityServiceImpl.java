@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class CityServiceImpl implements CityService {
 
@@ -41,6 +43,10 @@ public class CityServiceImpl implements CityService {
     public ResponseEntity<Void> deleteCity(Long id) {
         cityRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    public Optional<City> findById(Long id) {
+        return cityRepository.findById(id);
     }
 
 }

@@ -5,6 +5,7 @@ import com.mapToFiction.mapToFiction.mapper.SceneMapper;
 import com.mapToFiction.mapToFiction.model.*;
 import com.mapToFiction.mapToFiction.service.*;
 import com.mapToFiction.mapToFiction.service.dto.FictionDTO;
+import com.mapToFiction.mapToFiction.service.dto.LocationDTO;
 import com.mapToFiction.mapToFiction.service.dto.SceneDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +33,12 @@ public class FictionResource {
     @GetMapping
     @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
-    public List<FictionDTO> getFictions() {
-        return fictionService.getAll();
+    public List<FictionDTO> getFictions(@RequestParam(required = false) Long cityId) {
+        if (cityId != null) {
+            return fictionService.getFictionsByCity(cityId);
+        } else {
+            return fictionService.getAll();
+        }
     }
 
     // GET Fiction by ID
@@ -82,33 +87,34 @@ public class FictionResource {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity addSceneToFiction(@PathVariable Long id, @RequestBody SceneDTO sceneDTO) {
 
-        String responseMessage = "Scene created: ";
-
         if (sceneDTO == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Scene not found in request");
         }
 
         try {
             fictionService.addScene(id, sceneDTO);
+            String responseMessage = "Scene '" + sceneDTO.getName() + "' has been successfully added to the fiction '" + id + "'.";
             return ResponseEntity.status(HttpStatus.OK).body(responseMessage);
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Fiction not found");
+            String errorMessage = "Scene '" + sceneDTO.getName() + "' could not be created.";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
         }
     }
 
     @PostMapping("/{id}/scenes/{scene_id}/location")
     @CrossOrigin
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity addLocationToScene(@PathVariable Long id, @PathVariable Long scene_id, @RequestBody Location location) {
+    public ResponseEntity addLocationToScene(@PathVariable Long id, @PathVariable Long scene_id, @RequestBody LocationDTO locationDto) {
 
-        String responseMessage = "Location added successfully. ";
 
-        if (location == null) {
+        if (locationDto == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Location not found in request");
         }
 
         try {
-            fictionService.addLocationToScene(id, scene_id, location);
+            fictionService.addLocationToScene(id, scene_id, locationDto);
+            String responseMessage = "Location '" + locationDto.getFormatted_address() + "' has been successfully added to the scene '" + scene_id + "'.";
+
             return ResponseEntity.status(HttpStatus.CREATED).body(responseMessage);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Fiction or scene not found");
@@ -116,6 +122,5 @@ public class FictionResource {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while adding the location");
         }
     }
-
 }
 

@@ -14,5 +14,6 @@ public class LocationDTO {
     private String provider;
     private String place_id;
     private String formatted_address;
+    private Long city_id;
 }
 

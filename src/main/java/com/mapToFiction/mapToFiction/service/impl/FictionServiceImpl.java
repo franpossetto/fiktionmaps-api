@@ -1,14 +1,18 @@
 package com.mapToFiction.mapToFiction.service.impl;
 import com.mapToFiction.mapToFiction.mapper.FictionMapper;
+import com.mapToFiction.mapToFiction.mapper.LocationMapper;
 import com.mapToFiction.mapToFiction.mapper.SceneMapper;
+import com.mapToFiction.mapToFiction.model.City;
 import com.mapToFiction.mapToFiction.model.Fiction;
 import com.mapToFiction.mapToFiction.model.Location;
 import com.mapToFiction.mapToFiction.model.Scene;
+import com.mapToFiction.mapToFiction.repository.CityRepository;
 import com.mapToFiction.mapToFiction.repository.FictionRepository;
 import com.mapToFiction.mapToFiction.repository.LocationRepository;
 import com.mapToFiction.mapToFiction.repository.SceneRepository;
 import com.mapToFiction.mapToFiction.service.FictionService;
 import com.mapToFiction.mapToFiction.service.dto.FictionDTO;
+import com.mapToFiction.mapToFiction.service.dto.LocationDTO;
 import com.mapToFiction.mapToFiction.service.dto.SceneDTO;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
@@ -18,22 +22,27 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FictionServiceImpl implements FictionService {
     private final FictionRepository fictionRepository;
     private final SceneRepository sceneRepository;
     private final LocationRepository locationRepository;
+    private final CityRepository cityRepository;
     private final FictionMapper fictionMapper;
     private final SceneMapper sceneMapper;
+    private final LocationMapper locationMapper;
 
 
-    public FictionServiceImpl(FictionRepository fictionRepository, SceneRepository sceneRepository, LocationRepository locationRepository, FictionMapper fictionMapper, SceneMapper sceneMapper) {
+    public FictionServiceImpl(FictionRepository fictionRepository, SceneRepository sceneRepository, LocationRepository locationRepository, CityRepository cityRepository, FictionMapper fictionMapper, SceneMapper sceneMapper, LocationMapper locationMapper) {
         this.fictionRepository = fictionRepository;
         this.sceneRepository = sceneRepository;
         this.locationRepository = locationRepository;
+        this.cityRepository = cityRepository;
         this.fictionMapper = fictionMapper;
         this.sceneMapper = sceneMapper;
+        this.locationMapper = locationMapper;
 
     }
 
@@ -95,7 +104,7 @@ public class FictionServiceImpl implements FictionService {
     }
 
     @Override
-    public Scene addLocationToScene(Long fictionId, Long sceneId, Location location) {
+    public SceneDTO addLocationToScene(Long fictionId, Long sceneId, LocationDTO locationDto) {
 
         Optional<Fiction> fictionOpt = fictionRepository.findById(fictionId);
         if (!fictionOpt.isPresent()) {
@@ -103,9 +112,20 @@ public class FictionServiceImpl implements FictionService {
         }
 
         Scene scene = sceneRepository.findById(sceneId).get();
+
+        Location location = locationMapper.toEntity(locationDto);
+
+        Long cityId = locationDto.getCity_id();
+        Optional<City> cityOpt = cityRepository.findById(cityId);;
+        if (cityOpt.isPresent()) {
+            location.setCity(cityOpt.get());
+        }
+
         locationRepository.save(location);
         scene.setLocation(location);
-        return sceneRepository.save(scene);
+
+        sceneRepository.save(scene);
+        return sceneMapper.toDto(scene);
     }
 
     @Override
@@ -117,4 +137,12 @@ public class FictionServiceImpl implements FictionService {
     public boolean exists(String name) {
         return fictionRepository.existsByName(name);
     }
+    @Override
+    public List<FictionDTO> getFictionsByCity(Long cityId) {
+        List<Fiction> fictions = fictionRepository.findByCityId(cityId);
+        return fictions.stream()
+                .map(fictionMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
 }

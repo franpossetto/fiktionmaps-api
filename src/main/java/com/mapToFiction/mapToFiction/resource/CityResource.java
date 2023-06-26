@@ -3,6 +3,7 @@ package com.mapToFiction.mapToFiction.resource;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.mapToFiction.mapToFiction.model.City;
 import com.mapToFiction.mapToFiction.service.CityService;
+import io.swagger.models.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,4 +58,5 @@ public class CityResource {
         cityService.deleteCity(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 }

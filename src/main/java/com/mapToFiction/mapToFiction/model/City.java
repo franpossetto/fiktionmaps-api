@@ -3,13 +3,16 @@ package com.mapToFiction.mapToFiction.model;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "cities")
 public class City {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "citySeq")
+    @SequenceGenerator(name = "citySeq", initialValue = 1, allocationSize = 1)
     private Long id;
     private String name;
     private String placeId;
@@ -17,6 +20,9 @@ public class City {
     private Double longitude;
     private String provider;
     private String code;
+
+    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
+    private List<Location> locations = new ArrayList<>();
 
     public City() {
 
@@ -94,5 +100,13 @@ public class City {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public List<Location> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
     }
 }

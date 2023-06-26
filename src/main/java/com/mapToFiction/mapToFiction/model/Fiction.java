@@ -11,9 +11,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "fictions")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class Fiction {
 
     public enum Type {
@@ -24,14 +21,14 @@ public class Fiction {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "fictionSeq")
+    @SequenceGenerator(name = "fictionSeq", initialValue = 1, allocationSize = 1)
     private Long id;
     private String name;
     @Enumerated(EnumType.STRING)
     private Type type;
 
     @OneToMany( mappedBy = "fiction", cascade = CascadeType.ALL)
-    //@JsonManagedReference(value = "fiction-scene")
     private List<Scene> scenes = new ArrayList<>();
 
     public Fiction() {}

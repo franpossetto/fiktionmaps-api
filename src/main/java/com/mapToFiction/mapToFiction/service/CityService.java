@@ -5,6 +5,7 @@ import com.mapToFiction.mapToFiction.model.City;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CityService {
     City create(City city);
@@ -15,6 +16,6 @@ public interface CityService {
 
     ResponseEntity<Void> deleteCity(Long id);
 
-
+    Optional<City> findById(Long id);
 
 }
