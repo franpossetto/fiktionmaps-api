@@ -19,15 +19,6 @@ public interface SceneMapper extends EntityMapper<SceneDTO, Scene> {
     @Mapping(source = "location.city_id", target = "location.city.id")
     Scene toEntity(SceneDTO sceneDTO);
 
-    default Scene fromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        Scene scene = new Scene();
-        scene.setId(id);
-        return scene;
-    }
-
 }
 
 

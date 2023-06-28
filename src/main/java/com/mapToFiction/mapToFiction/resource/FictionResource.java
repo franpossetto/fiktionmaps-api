@@ -9,10 +9,12 @@ import com.mapToFiction.mapToFiction.service.dto.LocationDTO;
 import com.mapToFiction.mapToFiction.service.dto.SceneDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+
 
 @RestController
 @RequestMapping("/api/v1/fictions")
@@ -46,7 +48,7 @@ public class FictionResource {
     @PostMapping
     @CrossOrigin
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity addFiction(@RequestBody FictionDTO fictionDTO) {
+    public ResponseEntity addFiction(@Validated @RequestBody FictionDTO fictionDTO) {
         try {
             if (fictionDTO == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Fiction or location not found in request");
