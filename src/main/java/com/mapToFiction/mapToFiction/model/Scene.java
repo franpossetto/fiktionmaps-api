@@ -36,7 +36,7 @@ public class Scene {
     @JoinColumn(name = "fiction_id")
     private Fiction fiction;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id")
     private Location location;
 
