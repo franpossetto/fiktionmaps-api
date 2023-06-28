@@ -1,5 +1,6 @@
 package com.mapToFiction.mapToFiction.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.mapToFiction.mapToFiction.model.Scene;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +19,9 @@ public class SceneDTO {
     private Long startAt;
     private Long endAt;
     private Scene.SegmentType segmentType;
-    private Long fictionId;  // cambio de fiction a fictionId
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Long fictionId;
     private LocationDTO location;
 }
 
