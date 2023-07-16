@@ -5,6 +5,8 @@ import com.mapToFiction.mapToFiction.repository.LocationRepository;
 import com.mapToFiction.mapToFiction.service.LocationService;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class LocationServiceImpl implements LocationService {
 
@@ -26,7 +28,7 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public Location findByPlaceId(String placeId) {
+    public Optional<Location> findByPlaceId(String placeId) {
         return locationRepository.findByPlaceId(placeId);
     }
 }

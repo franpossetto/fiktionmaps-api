@@ -111,7 +111,6 @@ public class FictionServiceImpl implements FictionService {
 
     @Override
     public SceneDTO addLocationToScene(Long fictionId, Long sceneId, LocationDTO locationDto) {
-
         Optional<Fiction> fictionOpt = fictionRepository.findById(fictionId);
         if (!fictionOpt.isPresent()) {
             throw new NoSuchElementException("No Fiction found with id " + fictionId);
@@ -123,19 +122,31 @@ public class FictionServiceImpl implements FictionService {
             throw new IllegalStateException("The scene already has a location");
         }
 
-        Location location = locationMapper.toEntity(locationDto);
-        Long cityId = locationDto.getCity_id();
-        Optional<City> cityOpt = cityRepository.findById(cityId);;
-        if (cityOpt.isPresent()) {
-            location.setCity(cityOpt.get());
+        // Checking if a location with the given placeId already exists
+        Optional<Location> existingLocation = locationRepository.findByPlaceId(locationDto.getPlace_id());
+
+        Location location;
+        if(existingLocation.isPresent()) {
+            // If a location with the given placeId exists, we use it
+            location = existingLocation.get();
+        } else {
+            // If no such location exists, we create a new one
+            location = locationMapper.toEntity(locationDto);
+            Long cityId = locationDto.getCity_id();
+            Optional<City> cityOpt = cityRepository.findById(cityId);
+            if (cityOpt.isPresent()) {
+                location.setCity(cityOpt.get());
+            }
+
+            locationRepository.save(location);
         }
 
-        locationRepository.save(location);
         scene.setLocation(location);
 
         sceneRepository.save(scene);
         return sceneMapper.toDto(scene);
     }
+
 
     @Override
     public void deleteFiction(Long id){
