@@ -51,10 +51,14 @@ public class SceneResource {
         fictionService.update(fiction);
 
         // The Scene is saved after the Fiction is set and updated
-        sceneService.create(scene);
-
-        return ResponseEntity.ok("Todo ok.");
-
+        try {
+            sceneService.create(scene);
+            String responseMessage = "Scene '" + scene.getName() + "' has been created successfully.";
+            return ResponseEntity.ok(responseMessage);
+        } catch(Exception e) {
+            String errorMessage = "Scene '" + scene.getName() + "' could not be created.";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        }
     }
 
 }

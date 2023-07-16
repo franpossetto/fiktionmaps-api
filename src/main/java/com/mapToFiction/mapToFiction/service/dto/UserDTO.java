@@ -1,6 +1,6 @@
 package com.mapToFiction.mapToFiction.service.dto;
-import com.mapToFiction.mapToFiction.model.Fiction;
-import com.sun.istack.NotNull;
+
+import com.mapToFiction.mapToFiction.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,13 +12,13 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FictionDTO {
-    private Long id;
-    @NotNull
+public class UserDTO {
+    private String id;
+    private String externalUserId;
     private String name;
-    private Fiction.Type type;
+    private String email;
+    private String password;
+    private User.Role role;
     private List<SceneDTO> scenes;
-    private String fictionType;
 }
-
 

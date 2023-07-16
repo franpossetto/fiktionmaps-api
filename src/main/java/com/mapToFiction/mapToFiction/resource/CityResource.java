@@ -3,6 +3,8 @@ package com.mapToFiction.mapToFiction.resource;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.mapToFiction.mapToFiction.model.City;
 import com.mapToFiction.mapToFiction.service.CityService;
+import com.mapToFiction.mapToFiction.service.dto.CityDTO;
+import io.swagger.models.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,16 +24,14 @@ public class CityResource {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity addCity(@RequestBody JsonNode cityJsonNode) {
 
-        String responseMessage = "Todo ok. ";
-
-
         if (cityJsonNode == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("City not found in request");
         }
+
         City city = new City(cityJsonNode);
 
         cityService.create(city);
-        responseMessage += "Scene created: " + city.getName() + ". ";
+        String responseMessage = "The city " + city.getName() + " has been created. ";
 
         return ResponseEntity.status(HttpStatus.OK).body(responseMessage);
 
@@ -41,7 +41,7 @@ public class CityResource {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity getCities() {
 
-        List<City> cities = cityService.getAll();
+        List<CityDTO> cities = cityService.getAll();
         return new ResponseEntity<>(cities, HttpStatus.OK);
 
     }
@@ -57,4 +57,5 @@ public class CityResource {
         cityService.deleteCity(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 }

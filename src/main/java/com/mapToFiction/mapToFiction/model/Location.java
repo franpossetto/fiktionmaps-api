@@ -17,9 +17,11 @@ public class Location {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "locationSeq")
+    @SequenceGenerator(name = "locationSeq", initialValue = 1, allocationSize = 1)
     private Long id;
 
+    private String name;
     private String formattedAddress;
     private String placeId;
     private Double latitude;
@@ -29,6 +31,10 @@ public class Location {
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Scene> scenes = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "city_id")
+    private City city;
 
     public Location() {}
 
@@ -118,5 +124,13 @@ public class Location {
 
     public void setScenes(List<Scene> scenes) {
         this.scenes = scenes;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 }

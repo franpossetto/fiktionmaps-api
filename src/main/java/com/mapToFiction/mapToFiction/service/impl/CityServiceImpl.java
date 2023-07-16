@@ -1,21 +1,27 @@
 package com.mapToFiction.mapToFiction.service.impl;
 
+import com.mapToFiction.mapToFiction.mapper.CityMapper;
 import com.mapToFiction.mapToFiction.model.City;
 import com.mapToFiction.mapToFiction.repository.CityRepository;
 import com.mapToFiction.mapToFiction.repository.FictionRepository;
 import com.mapToFiction.mapToFiction.service.CityService;
+import com.mapToFiction.mapToFiction.service.dto.CityDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class CityServiceImpl implements CityService {
 
     private final CityRepository cityRepository;
+    private final CityMapper cityMapper;
 
-    public CityServiceImpl(CityRepository cityRepository) {
+    public CityServiceImpl(CityRepository cityRepository, CityMapper cityMapper) {
         this.cityRepository = cityRepository;
+        this.cityMapper = cityMapper;
     }
 
     @Override
@@ -24,8 +30,8 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public List<City> getAll() {
-        return cityRepository.findAll();
+    public List<CityDTO> getAll() {
+        return cityMapper.toDtoList(cityRepository.findAll());
     }
 
     public City updateCity(Long id, City cityUpdate){
@@ -41,6 +47,10 @@ public class CityServiceImpl implements CityService {
     public ResponseEntity<Void> deleteCity(Long id) {
         cityRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    public Optional<City> findById(Long id) {
+        return cityRepository.findById(id);
     }
 
 }
