@@ -21,6 +21,7 @@ public class Location {
     @SequenceGenerator(name = "locationSeq", initialValue = 1, allocationSize = 1)
     private Long id;
 
+    private String name;
     private String formattedAddress;
     private String placeId;
     private Double latitude;
