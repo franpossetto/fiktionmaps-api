@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.mapToFiction.mapToFiction.mapper.SceneMapper;
 import com.mapToFiction.mapToFiction.model.*;
 import com.mapToFiction.mapToFiction.service.*;
+import com.mapToFiction.mapToFiction.service.dto.CityDTO;
 import com.mapToFiction.mapToFiction.service.dto.FictionDTO;
 import com.mapToFiction.mapToFiction.service.dto.LocationDTO;
 import com.mapToFiction.mapToFiction.service.dto.SceneDTO;
@@ -45,10 +46,26 @@ public class FictionResource {
 
     // GET Fiction by ID
 
+
+
+    //GET Cities by Fiction
+    @GetMapping("/{id}/cities")
+    @CrossOrigin
+    @ResponseStatus(HttpStatus.OK)
+    public List<CityDTO> GetCitiesByFiction(@RequestHeader("Authorization") String token, @PathVariable Long id){
+        return fictionService.getCitiesByFiction(id);
+    }
+
+
+
+    // GET Scenes by Fiction
+
+    // GET Scenes by Fiction and City
+
     @PostMapping
     @CrossOrigin
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity addFiction(@Validated @RequestBody FictionDTO fictionDTO) {
+    public ResponseEntity addFiction(@Validated @RequestHeader("Authorization") String token, @RequestBody FictionDTO fictionDTO) {
         try {
             if (fictionDTO == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Fiction or location not found in request");
@@ -71,7 +88,7 @@ public class FictionResource {
     @PutMapping
     @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Fiction> updateFiction(@PathVariable Long id, @RequestBody Fiction updateFiction){
+    public ResponseEntity<Fiction> updateFiction(@RequestHeader("Authorization") String token, @PathVariable Long id, @RequestBody Fiction updateFiction){
         Fiction updatedFiction = fictionService.update(id, updateFiction);
         return new ResponseEntity<>(updatedFiction, HttpStatus.OK);
     }
@@ -80,7 +97,7 @@ public class FictionResource {
     @DeleteMapping("/{id}")
     @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
-    public void deleteFiction(@PathVariable Long id){
+    public void deleteFiction(@RequestHeader("Authorization") String token, @PathVariable Long id){
         fictionService.deleteFiction(id);
     }
 
@@ -116,10 +133,11 @@ public class FictionResource {
         try {
             fictionService.addLocationToScene(id, scene_id, locationDto);
             String responseMessage = "Location '" + locationDto.getFormatted_address() + "' has been successfully added to the scene '" + scene_id + "'.";
-
             return ResponseEntity.status(HttpStatus.CREATED).body(responseMessage);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Fiction or scene not found");
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while adding the location");
         }

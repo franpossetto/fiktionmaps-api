@@ -40,6 +40,10 @@ public class Scene {
     @JoinColumn(name = "location_id")
     private Location location;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     public Scene() {}
 
     public Scene(JsonNode sceneJsonNode) {
@@ -139,6 +143,14 @@ public class Scene {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }

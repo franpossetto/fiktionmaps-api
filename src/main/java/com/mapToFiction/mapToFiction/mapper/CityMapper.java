@@ -10,9 +10,9 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = SceneMapper.class)
 public interface CityMapper extends EntityMapper<CityDTO, City> {
-    @Mapping(source = "city.id", target = "city_id")
-    LocationDTO toDto(Location location);
-
-    @Mapping(source = "city_id", target = "city.id")
-    Location toEntity(LocationDTO locationDTO);
+//    @Mapping(source = "city.id", target = "city_id")
+//    LocationDTO toDto(Location location);
+//
+//    @Mapping(source = "city_id", target = "city.id")
+//    Location toEntity(LocationDTO locationDTO);
 }

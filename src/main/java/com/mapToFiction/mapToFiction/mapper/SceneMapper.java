@@ -14,9 +14,11 @@ import java.util.List;
 public interface SceneMapper extends EntityMapper<SceneDTO, Scene> {
 
     @Mapping(source = "location.city.id", target = "location.city_id")
+    @Mapping(source = "user.id", target = "user_id")
     SceneDTO toDto(Scene scene);
 
     @Mapping(source = "location.city_id", target = "location.city.id")
+    @Mapping(source = "user_id", target = "user.id")
     Scene toEntity(SceneDTO sceneDTO);
 
 }

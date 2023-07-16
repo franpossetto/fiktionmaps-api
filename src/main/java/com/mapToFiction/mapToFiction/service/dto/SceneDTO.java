@@ -22,6 +22,9 @@ public class SceneDTO {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long fictionId;
+
     private LocationDTO location;
+
+    private Long user_id;
 }
 
