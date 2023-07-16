@@ -7,6 +7,7 @@ build/
 !**/src/test/**/build/
 /m2docker/data/
 /docker/data/
+serviceAccountKey.json
 
 ### STS ###
 .apt_generated
