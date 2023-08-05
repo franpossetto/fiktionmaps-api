@@ -36,6 +36,8 @@ public class Fiction {
     @Enumerated(EnumType.STRING)
     private Type type;
 
+    private String imgUrl;
+
     @OneToMany(mappedBy = "fiction", cascade = CascadeType.ALL)
     private List<Scene> scenes = new ArrayList<>();
 
