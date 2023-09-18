@@ -29,7 +29,7 @@ public class Fiction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "fictionSeq")
-    @SequenceGenerator(name = "fictionSeq", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "fictionSeq", initialValue = 500, allocationSize = 1)
     private Long id;
     private String name;
 
