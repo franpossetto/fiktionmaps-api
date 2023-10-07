@@ -44,6 +44,13 @@ public class FictionResource {
         }
     }
 
+    @GetMapping("/scenes")
+    @CrossOrigin
+    @ResponseStatus(HttpStatus.OK)
+    public List<SceneDTO> getScenes(@RequestHeader("Authorization") String token) {
+        return sceneService.getAll();
+    }
+
     // GET Fiction by ID
 
 
@@ -55,8 +62,6 @@ public class FictionResource {
     public List<CityDTO> GetCitiesByFiction(@RequestHeader("Authorization") String token, @PathVariable Long id){
         return fictionService.getCitiesByFiction(id);
     }
-
-
 
     // GET Scenes by Fiction
 

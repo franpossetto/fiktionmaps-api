@@ -170,4 +170,5 @@ public class FictionServiceImpl implements FictionService {
         return cityMapper.toDtoList(fictionRepository.getCitiesByFiction(fictionId));
     }
 
+
 }
