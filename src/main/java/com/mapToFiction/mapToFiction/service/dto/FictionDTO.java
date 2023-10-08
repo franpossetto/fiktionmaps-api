@@ -19,6 +19,7 @@ public class FictionDTO {
     private Fiction.Type type;
     private List<SceneDTO> scenes;
     private String fictionType;
+    private String imgUrl;
 }
 
 

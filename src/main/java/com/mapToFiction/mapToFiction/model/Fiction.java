@@ -29,21 +29,30 @@ public class Fiction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "fictionSeq")
-    @SequenceGenerator(name = "fictionSeq", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "fictionSeq", initialValue = 500, allocationSize = 1)
     private Long id;
     private String name;
-
     @Enumerated(EnumType.STRING)
     private Type type;
+
+    private String externalId;
+
+    private Integer year;
+    private Integer duration;
+
+    private String imgUrl;
 
     @OneToMany(mappedBy = "fiction", cascade = CascadeType.ALL)
     private List<Scene> scenes = new ArrayList<>();
 
     public Fiction(JsonNode fictionJsonNode) {
-        this.name = fictionJsonNode.get("name").asText();
+        this.name = String.valueOf(fictionJsonNode.get("name"));
         this.type = Type.valueOf(fictionJsonNode.get("type").asText());
-        JsonNode sceneNode = fictionJsonNode.get("scene");
+        this.externalId = String.valueOf(fictionJsonNode.get("externalId").asText());
+        this.duration = Integer.valueOf(fictionJsonNode.get("type").asInt());
 
+
+        JsonNode sceneNode = fictionJsonNode.get("scene");
         if (sceneNode != null) {
             Scene scene = new Scene(sceneNode);
             scene.setFiction(this);
