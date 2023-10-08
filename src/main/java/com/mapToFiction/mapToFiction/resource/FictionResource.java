@@ -24,13 +24,11 @@ public class FictionResource {
     private final FictionService fictionService;
     private final SceneService sceneService;
     private final GoogleMapsService googleMapsService;
-    private final RowAPIDataService rowAPIDataService;
-    public FictionResource(LocationService locationService, FictionService fictionService, SceneService sceneService, GoogleMapsService googleMapsService, RowAPIDataService rowAPIDataService) {
+    public FictionResource(LocationService locationService, FictionService fictionService, SceneService sceneService, GoogleMapsService googleMapsService) {
             this.locationService = locationService;
             this.fictionService = fictionService;
             this.sceneService = sceneService;
             this.googleMapsService = googleMapsService;
-            this.rowAPIDataService = rowAPIDataService;
         }
 
     @GetMapping
