@@ -33,6 +33,8 @@ public class Location {
     private Double latitude;
     private Double longitude;
     private String type;
+
+    private String postCode;
     private String provider;
 
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)

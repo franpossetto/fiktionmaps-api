@@ -1,6 +1,7 @@
 package com.mapToFiction.mapToFiction.service;
 
 import com.mapToFiction.mapToFiction.service.dto.UserDTO;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,5 +11,7 @@ public interface UserService {
     UserDTO updateUser(UserDTO userDto, Long id);
     void deleteUser(Long id);
     List<UserDTO> getAllUsers();
+
+    UserDTO getCurrentUser(String externalId);
 
 }

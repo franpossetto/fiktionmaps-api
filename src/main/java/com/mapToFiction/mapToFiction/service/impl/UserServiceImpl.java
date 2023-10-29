@@ -54,4 +54,9 @@ public class UserServiceImpl implements UserService {
                 .map(userMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public UserDTO getCurrentUser(String externalUserId) {
+        return userMapper.toDto(userRepository.findByExternalUserId(externalUserId));
+    }
 }

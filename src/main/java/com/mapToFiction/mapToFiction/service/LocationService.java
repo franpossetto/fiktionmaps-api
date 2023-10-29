@@ -5,9 +5,12 @@ import com.mapToFiction.mapToFiction.model.Location;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface LocationService {
+
+    List<Location> getAll();
     Location create(Location location);
     Location findByAddress(String address);
     Optional<Location> findByPlaceId(String placeId);

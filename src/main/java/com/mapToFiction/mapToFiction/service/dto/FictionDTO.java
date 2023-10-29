@@ -18,6 +18,9 @@ public class FictionDTO {
     private String name;
     private Fiction.Type type;
     private List<SceneDTO> scenes;
+    private Integer year;
+    private Integer duration;
+    private Integer externalId;
     private String fictionType;
     private String imgUrl;
 }

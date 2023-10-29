@@ -1,12 +1,7 @@
 package com.mapToFiction.mapToFiction.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +61,6 @@ public class Fiction {
         }
         this.scenes.addAll(scenes);
     }
-
     public void addScene(Scene scene) {
         if (this.scenes == null) {
             this.scenes = new ArrayList<>();

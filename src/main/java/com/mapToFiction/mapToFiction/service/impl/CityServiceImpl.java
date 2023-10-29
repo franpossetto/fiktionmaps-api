@@ -34,6 +34,12 @@ public class CityServiceImpl implements CityService {
         return cityMapper.toDtoList(cityRepository.findAll());
     }
 
+    @Override
+    public CityDTO getCityById(Long id) {
+        return cityMapper.toDto(cityRepository.findById(id).get());
+    }
+
+
     public City updateCity(Long id, City cityUpdate){
         return cityRepository.findById(id)
                 .map(city -> {

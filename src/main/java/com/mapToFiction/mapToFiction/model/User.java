@@ -22,7 +22,8 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @SequenceGenerator(name = "user_seq", initialValue = 460, allocationSize = 1)
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -51,6 +52,10 @@ public class User {
 
     @Column
     private boolean emailVerified;
+
+    @Column
+    private String country;
+
 
     public enum Role {
         ADMIN,

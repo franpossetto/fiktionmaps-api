@@ -25,6 +25,7 @@ public class UserResource {
     }
 
     @PutMapping("/{id}")
+    @CrossOrigin
     public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long id) {
         UserDTO result = userService.updateUser(userDTO, id);
         return ResponseEntity.ok().body(result);
@@ -40,5 +41,16 @@ public class UserResource {
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> users = userService.getAllUsers();
         return ResponseEntity.ok().body(users);
+    }
+
+    @GetMapping("/{externalUserId}")
+    public ResponseEntity<UserDTO> getCurrentUser(@PathVariable String externalUserId) {
+        UserDTO user = userService.getCurrentUser(externalUserId);
+        if (user != null) {
+            return ResponseEntity.ok().body(user);
+        }
+
+        return ResponseEntity.notFound().build();
+
     }
 }

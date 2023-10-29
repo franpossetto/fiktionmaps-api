@@ -3,6 +3,7 @@ package com.mapToFiction.mapToFiction.resource;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.mapToFiction.mapToFiction.mapper.SceneMapper;
 import com.mapToFiction.mapToFiction.model.*;
+import com.mapToFiction.mapToFiction.model.dto.Totals;
 import com.mapToFiction.mapToFiction.service.*;
 import com.mapToFiction.mapToFiction.service.dto.CityDTO;
 import com.mapToFiction.mapToFiction.service.dto.FictionDTO;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -24,11 +26,13 @@ public class FictionResource {
     private final FictionService fictionService;
     private final SceneService sceneService;
     private final GoogleMapsService googleMapsService;
-    public FictionResource(LocationService locationService, FictionService fictionService, SceneService sceneService, GoogleMapsService googleMapsService) {
+    private final CityService cityService;
+    public FictionResource(LocationService locationService, FictionService fictionService, SceneService sceneService, GoogleMapsService googleMapsService, CityService cityService) {
             this.locationService = locationService;
             this.fictionService = fictionService;
             this.sceneService = sceneService;
             this.googleMapsService = googleMapsService;
+            this.cityService = cityService;
         }
 
     @GetMapping
@@ -144,6 +148,17 @@ public class FictionResource {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while adding the location");
         }
+    }
+
+    @GetMapping("/totals")
+    @CrossOrigin
+    public ResponseEntity<Totals> getTotals(){
+        Integer allFictions = fictionService.getAll().size();
+        Integer allCities = cityService.getAll().size();
+        Integer allScenes = sceneService.getAll().size();
+        Integer allLocations = locationService.getAll().size();
+        Totals totals = new Totals(allFictions, allCities, allScenes, allLocations);
+        return ResponseEntity.ok(totals);
     }
 }
 

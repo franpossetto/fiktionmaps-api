@@ -13,6 +13,8 @@ public interface CityService {
 
     List<CityDTO> getAll();
 
+    CityDTO getCityById(Long id);
+
     City updateCity(Long id, City city);
 
     ResponseEntity<Void> deleteCity(Long id);

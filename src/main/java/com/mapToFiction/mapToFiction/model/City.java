@@ -24,7 +24,6 @@ public class City {
     private Double latitude;
     private Double longitude;
     private String provider;
-    private String code;
 
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
     private List<Location> locations = new ArrayList<>();
@@ -35,7 +34,6 @@ public class City {
         this.latitude = latitude;
         this.longitude = longitude;
         this.provider = provider;
-        this.code = code;
     }
 
     public City(JsonNode city) {
@@ -44,6 +42,5 @@ public class City {
         this.latitude = city.get("latitude").asDouble();
         this.longitude = city.get("longitude").asDouble();
         this.provider = city.get("provider").asText();
-        this.code = city.get("code").asText();
     }
 }

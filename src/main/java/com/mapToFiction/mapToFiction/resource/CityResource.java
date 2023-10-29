@@ -38,21 +38,29 @@ public class CityResource {
     }
 
     @GetMapping
+    @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity getCities() {
-
         List<CityDTO> cities = cityService.getAll();
         return new ResponseEntity<>(cities, HttpStatus.OK);
+    }
 
+    @GetMapping("/{id}")
+    @CrossOrigin
+    @ResponseStatus(HttpStatus.OK)
+    public CityDTO GetCitiesById(@RequestHeader("Authorization") String token, @PathVariable Long id){
+        return cityService.getCityById(id);
     }
 
     @PutMapping("/{id}")
+    @CrossOrigin
     public ResponseEntity<City> updateCity(@PathVariable Long id, @RequestBody City cityUpdate) {
         City updatedCity = cityService.updateCity(id, cityUpdate);
         return new ResponseEntity<>(updatedCity, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
+    @CrossOrigin
     public ResponseEntity<Void> deleteCity(@PathVariable Long id) {
         cityService.deleteCity(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

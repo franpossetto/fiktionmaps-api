@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS public.locations
 (
     id bigint NOT NULL,
     formatted_address character varying(255) COLLATE pg_catalog."default",
+    post_code character varying(255) COLLATE pg_catalog."default",
     latitude double precision,
     longitude double precision,
     type character varying(255) COLLATE pg_catalog."default",
@@ -139,7 +140,6 @@ INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url)
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (8, 'Across 110th street', 'MOVIE', 'tt0068168', 1972, 102, 'm_across_110th_street.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (9, 'Adam’s rib', 'MOVIE', 'tt0041090', 1949, 101, 'm_adam’s_rib.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (10, 'After hours', 'MOVIE', 'tt0088680', 1985, 97, 'm_after_hours.jpg');
-
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (11, 'Alice', 'MOVIE', 'tt0099012', 1990, 106, 'm_alice.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (12, 'Alice in den Städten (Alice in the Cities)', 'MOVIE', 'tt0071141', 1974, 110, 'm_alice_in_dem_städten_(alice_in_the_cities).jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (13, 'All about eve', 'MOVIE', 'tt0042192', 1950, 138, 'm_all_about_eve.jpg');
@@ -156,7 +156,6 @@ INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url)
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (24, 'American splendor', 'MOVIE', 'tt0305206', 2003, 101, 'm_american_splendor.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (25, 'Der amerikanische freund (the american friend)', 'MOVIE', 'tt0075675', 1977, 125, 'm_der_amerikanische_freund_(the_american_friend).jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (26, 'Analyze that', 'MOVIE', 'tt0289848', 2002, 96, 'm_analyze_that.jpg');
-
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (27, 'Analyze this', 'MOVIE', 'tt0122933', 1999, 103, 'm_analyze_this.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (28, 'The anderson tapes', 'MOVIE', 'tt0066767', 1971, 99, 'm_the_anderson_tapes.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (29, 'Angel heart', 'MOVIE', 'tt0092563', 1987, 113, 'm_angel_heart.jpg');
@@ -167,7 +166,6 @@ INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url)
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (34, 'Armageddon', 'MOVIE', 'tt0120591', 1998, 151, 'm_armageddon.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (35, 'Arthur', 'MOVIE', 'tt0082031', 1981, 97, 'm_arthur_(1981).jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (36, 'Arthur', 'MOVIE', 'tt1334512', 2011, 110, 'm_arthur_(2011).jpg');
-
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (37, 'As good as it gets', 'MOVIE', 'tt0119822', 1997, 139, 'm_as_good_as_it_gets.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (38, 'The avengers (avengers assemble) (2012)', 'MOVIE', 'tt0848228', 2012, 143, 'm_the_avengers_(avengers_assemble)_(2012).jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (39, 'Awakenings', 'MOVIE', 'tt0099077', 1990, 121, 'm_awakenings.jpg');
@@ -184,7 +182,6 @@ INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url)
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (50, 'The big blue', 'MOVIE', 'tt0095250', 1988, 168, 'm_the_big_blue.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (51, 'Big daddy', 'MOVIE', 'tt0142342', 1999, 93, 'm_big_daddy.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (52, 'Birdman', 'MOVIE', 'tt2562232', 2014, 119, 'm_birdman.jpg');
-
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (53, 'Birth', 'MOVIE', 'tt0337876', 2004, 100, 'm_birth.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (54, 'Black rain', 'MOVIE', 'tt0096933', 1989, 125, 'm_black_rain.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (55, 'Black swan', 'MOVIE', 'tt0947798', 2010, 108, 'm_black_swan.jpg');
@@ -201,7 +198,6 @@ INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url)
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (66, 'Carnal knowledge', 'MOVIE', 'tt0066892', 1971, 98, 'm_carnal_knowledge.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (67, 'Catch me if you can', 'MOVIE', 'tt0264464', 2002, 141, 'm_catch_me_if_you_can.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (68, 'Celebrity', 'MOVIE', 'tt0120533', 1998, 113, 'm_celebrity.jpg');
-
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (69, 'Chasing amy', 'MOVIE', 'tt0118842', 1997, 113, 'm_chasing_amy.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (70, 'City slickers', 'MOVIE', 'tt0101587', 1991, 113, 'm_city_slickers.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (71, 'Clockers', 'MOVIE', 'tt0112641', 1995, 128, 'm_clockers.jpg');
@@ -219,7 +215,6 @@ INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url)
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (83, 'The dark knight rises', 'MOVIE', 'tt1345836', 2012, 165, 'm_the_dark_knight_rises.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (84, 'Death wish', 'MOVIE', 'tt0071402', 1974, 93, 'm_death_wish.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (85, 'Deep impact', 'MOVIE', 'tt0120647', 1998, 120, 'm_deep_impact.jpg');
-
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (86, 'The departed', 'MOVIE', 'tt0407887', 2006, 151, 'm_the_departed.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (87, 'Desperately seeking susan', 'MOVIE', 'tt0088680', 1985, 104, 'm_desperately_seeking_susan.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (88, 'The devil wears prada', 'MOVIE', 'tt0458352', 2006, 109, 'm_the_devil_wears_prada.jpg');
@@ -237,7 +232,6 @@ INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url)
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (100, 'Elf', 'MOVIE', 'tt0319343', 2003, 97, 'm_elf.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (101, 'Enchanted', 'MOVIE', 'tt0461770', 2007, 107, 'm_enchanted.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (102, 'Entrapment', 'MOVIE', 'tt0137494', 1999, 113, 'm_entrapment.jpg');
-
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (103, 'Escape from new york', 'MOVIE', 'tt0082340', 1981, 99, 'm_escape_from_new_york.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (104, 'Eternal sunshine of the spotless mind', 'MOVIE', 'tt0338013', 2004, 108, 'm_eternal_sunshine_of_the_spotless_mind.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (105, 'Everyone says i love you', 'MOVIE', 'tt0116242', 1996, 101, 'm_everyone_says_i_love_you.jpg');
@@ -254,7 +248,6 @@ INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url)
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (116, 'Funny face', 'MOVIE', 'tt0050419', 1957, 103, 'm_funny_face.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (117, 'Funny girl', 'MOVIE', 'tt0062994', 1968, 151, 'm_funny_girl.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (118, 'Garden state', 'MOVIE', 'tt0333766', 2004, 102, 'm_garden_state.jpg');
-
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (119, 'Ghost', 'MOVIE', 'tt0099653', 1990, 127, 'm_ghost.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (120, 'Ghostbusters', 'MOVIE', 'tt0087332', 1984, 105, 'm_ghostbusters.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (121, 'Ghostbusters ii', 'MOVIE', 'tt0097428', 1989, 108, 'm_ghostbusters_ii.jpg');
@@ -272,7 +265,6 @@ INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url)
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (133, 'Hester street', 'MOVIE', 'tt0073107', 1975, 89, 'm_hester_street.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (134, 'Highlander', 'MOVIE', 'tt0091203', 1986, 116, 'm_highlander.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (135, 'Hitch', 'MOVIE', 'tt0386588', 2005, 118, 'm_hitch.jpg');
-
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (136, 'Home alone 2: lost in new york', 'MOVIE', 'tt0104431', 1992, 120, 'm_home_alone_2_lost_in_new_york.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (137, 'Honeymoon in vegas', 'MOVIE', 'tt0104438', 1992, 96, 'm_honeymoon_in_vegas.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (138, 'The hospital', 'MOVIE', 'tt0067217', 1971, 103, 'm_the_hospital.jpg');
@@ -290,7 +282,6 @@ INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url)
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (150, 'The irishman', 'MOVIE', 'tt1302006', 2019, 209, 'm_the_irishman.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (151, 'Iron man 2', 'MOVIE', 'tt1228705', 2010, 124, 'm_iron_man_2.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (152, 'Jack ryan: shadow recruit', 'MOVIE', 'tt1205537', 2014, 105, 'm_jack_ryan:_shadow_recruit.jpg');
-
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (153, 'Jerry maguire', 'MOVIE', 'tt0116695', 1996, 139, 'm_jerry_maguire.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (154, 'John wick', 'MOVIE', 'tt2911666', 2014, 101, 'm_john_wick.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (155, 'John wick: chapter 2', 'MOVIE', 'tt4425200', 2017, 122, 'm_john_wick:_chapter_2.jpg');
@@ -307,7 +298,6 @@ INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url)
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (166, 'Kiss of death', 'MOVIE', 'tt0113690', 1995, 101, 'm_kiss_of_death.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (167, 'Klute', 'MOVIE', 'tt0067309', 1971, 114, 'm_klute.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (168, 'Kramer vs kramer', 'MOVIE', 'tt0079417', 1979, 105, 'm_kramer_vs_kramer.jpg');
-
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (169, 'Last action hero', 'MOVIE', 'tt0107362', 1993, 130, 'm_last_action_hero.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (170, 'The last detail', 'MOVIE', 'tt0070290', 1973, 104, 'm_the_last_detail.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (171, 'The last house on the left', 'MOVIE', 'tt0068833', 1972, 84, 'm_the_last_house_on_the_left.jpg');
@@ -325,7 +315,6 @@ INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url)
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (183, 'Madigan', 'MOVIE', 'tt0063227', 1968, 101, 'm_madigan.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (184, 'Malcolm x', 'MOVIE', 'tt0104797', 1992, 202, 'm_malcolm_x.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (185, 'The man who fell to earth', 'MOVIE', 'tt0074851', 1976, 139, 'm_the_man_who_fell_to_earth.jpg');
-
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (186, 'The manchurian candidate', 'MOVIE', 'tt0056218', 1962, 126, 'm_the_manchurian_candidate_(1962).jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (187, 'Manhattan', 'MOVIE', 'tt0079522', 1979, 96, 'm_manhattan.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (188, 'Manhattan murder mystery', 'MOVIE', 'tt0107507', 1993, 104, 'm_manhattan_murder_mystery.jpg');
@@ -341,7 +330,6 @@ INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url)
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (198, 'Midnight run', 'MOVIE', 'tt0095631', 1988, 126, 'm_midnight_run.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (199, 'Mighty aphrodite', 'MOVIE', 'tt0113819', 1995, 95, 'm_mighty_aphrodite.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (200, 'Miracle on 34th street', 'MOVIE', 'tt0039628', 1947, 96, 'm_miracle_on_34th_street_(1947).jpg');
-
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (201, 'Miracle on 34th street', 'MOVIE', 'tt0110527', 1994, 114, 'm_miracle_on_34th_street_(1994).jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (202, 'Mr & mrs smith', 'MOVIE', 'tt0356910', 2005, 120, 'm_mr_&_mrs_smith.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (203, 'Mo’ better blues', 'MOVIE', 'tt0100168', 1990, 130, 'm_mo’_better_blues.jpg');
@@ -359,7 +347,6 @@ INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url)
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (215, 'Nothing sacred', 'MOVIE', 'tt0029322', 1937, 77, 'm_nothing_sacred.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (216, 'Now you see me', 'MOVIE', 'tt1670345', 2013, 115, 'm_now_you_see_me.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (217, 'Oblivion', 'MOVIE', 'tt1483013', 2013, 124, 'm_oblivion.jpg');
-
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (218, 'The odd couple', 'MOVIE', 'tt0063374', 1968, 105, 'm_the_odd_couple.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (219, 'On a clear day you can see forever', 'MOVIE', 'tt0066579', 1970, 129, 'm_on_a_clear_day_you_can_see_forever.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (220, 'On the town', 'MOVIE', 'tt0041716', 1949, 98, 'm_on_the_town.jpg');
@@ -377,7 +364,6 @@ INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url)
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (232, 'Q – the winged serpent', 'MOVIE', 'tt0084556', 1982, 93, 'm_q_–_the_winged_serpent.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (233, 'Quiz show', 'MOVIE', 'tt0110932', 1994, 133, 'm_quiz_show.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (234, 'Radio days', 'MOVIE', 'tt0093818', 1987, 88, 'm_radio_days.jpg');
-
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (235, 'Raging bull', 'MOVIE', 'tt0081398', 1980, 129, 'm_raging_bull.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (236, 'Ransom', 'MOVIE', 'tt0117438', 1996, 121, 'm_ransom.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (237, 'Requiem for a dream', 'MOVIE', 'tt0180093', 2000, 102, 'm_requiem_for_a_dream.jpg');
@@ -395,7 +381,6 @@ INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url)
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (249, 'Scent of a woman', 'MOVIE', 'tt0105323', 1992, 156, 'm_scent_of_a_woman.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (250, 'School of rock', 'MOVIE', 'tt0332379', 2003, 108, 'm_school_of_rock.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (251, 'Sea of love', 'MOVIE', 'tt0098273', 1989, 113, 'm_sea_of_love.jpg');
-
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (252, 'Seconds', 'MOVIE', 'tt0060955', 1966, 106, 'm_seconds.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (253, 'Serpico', 'MOVIE', 'tt0070666', 1973, 130, 'm_serpico.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (254, 'The seven year itch', 'MOVIE', 'tt0048605', 1955, 105, 'm_the_seven_year_itch.jpg');
@@ -413,7 +398,6 @@ INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url)
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (266, 'Sliver', 'MOVIE', 'tt0108162', 1993, 107, 'm_sliver.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (267, 'Someone to watch over me', 'MOVIE', 'tt0094008', 1987, 106, 'm_someone_to_watch_over_me.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (268, 'Sophie’s choice', 'MOVIE', 'tt0084707', 1982, 150, 'm_sophie’s_choice.jpg');
-
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (269, 'Sotto gli occhi dellassassino (aka tenebrae; unsane)', 'MOVIE', 'tt0084777', 1982, 101, 'm_sotto_gli_occhi_dellassassino_(aka_tenebrae;_unsane).jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (270, 'Spider-man', 'MOVIE', 'tt0145487', 2002, 121, 'm_spider_man.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (271, 'Spider-man 2', 'MOVIE', 'tt0316654', 2004, 127, 'm_spider_man_2.jpg');
@@ -430,7 +414,6 @@ INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url)
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (282, 'Superman', 'MOVIE', 'tt0078346', 1978, 143, 'm_superman.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (283, 'Superman ii', 'MOVIE', 'tt0081573', 1980, 127, 'm_superman_ii.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (284, 'Superman returns', 'MOVIE', 'tt0348150', 2006, 154, 'm_superman_returns.jpg');
-
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (285, 'The sweet smell of success', 'MOVIE', 'tt0051036', 1957, 96, 'm_the_sweet_smell_of_success.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (286, 'The taking of pelham one two three (1974)', 'MOVIE', 'tt0072251', 1974, 104, 'm_the_taking_of_pelham_one_two_three_(1974).jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (287, 'The talented mr ripley', 'MOVIE', 'tt0134119', 1999, 139, 'm_the_talented_mr_ripley.jpg');
@@ -445,7 +428,6 @@ INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url)
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (296, 'Topaz', 'MOVIE', 'tt0065112', 1969, 127, 'm_topaz.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (297, 'Trading places', 'MOVIE', 'tt0086465', 1983, 116, 'm_trading_places.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (298, 'Transformers: dark of the moon', 'MOVIE', 'tt1399103', 2011, 154, 'm_transformers:_dark_of_the_moon.jpg');
-
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (299, '12 angry men', 'MOVIE', 'tt0050083', 1957, 96, 'm_12_angry_men.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (300, 'Under the clock', 'MOVIE', 'tt8267604', 2018, 76, 'm_under_the_clock.jpg');  -- No estoy 100% seguro sobre esta película, por favor verifica el IMDb ID.
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (301, 'Unsane', 'MOVIE', 'tt7153766', 2018, 98, 'm_unsane.jpg');
@@ -457,7 +439,6 @@ INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url)
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (307, 'Vicky cristina barcelona', 'MOVIE', 'tt0497465', 2008, 96, 'm_vicky_cristina_barcelona.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (308, 'Wait until dark', 'MOVIE', 'tt0062467', 1967, 108, 'm_wait_until_dark.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (309, 'Wall street', 'MOVIE', 'tt0094291', 1987, 126, 'm_wall_street.jpg');
-
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (310, 'War of the worlds (2005)', 'MOVIE', 'tt0407304', 2005, 116, 'm_war_of_the_worlds_(2005).jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (311, 'The warriors', 'MOVIE', 'tt0080120', 1979, 92, 'm_the_warriors.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (312, 'The way we were', 'MOVIE', 'tt0070903', 1973, 118, 'm_the_way_we_were.jpg');
@@ -472,20 +453,42 @@ INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url)
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (321, 'Year of the dragon', 'MOVIE', 'tt0090350', 1985, 134, 'm_year_of_the_dragon.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (322, 'You’ve got mail', 'MOVIE', 'tt0128853', 1998, 119, 'm_you’ve_got_mail.jpg');
 INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (323, 'Zoolander', 'MOVIE', 'tt0196229', 2001, 90, 'm_zoolander.jpg');
+INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (324, 'The girl of the dragon tattoo', 'MOVIE', 'tt1568346', 2011, 98, 'm_the_girl_of_the_dragon_tattoo_2011.jpg');
+INSERT INTO public.fictions(id, name, type, externalId, year, duration, img_url) VALUES (325, 'Wonder wheel', 'MOVIE', 'tt5825380', 2017, 81, 'm_wonder_wheel.jpg');
+
+
 
 INSERT INTO public.app_user(id, name, created_at, email, external_user_id, role, updated_at) VALUES (1, 'Francisco Possetto', '2023-07-21 06:49:26.775077+00', 'franciscopossetto@gmail.com', 'q34sFFvbJegypmZbxugQ5B9sHHl1', 'ADMIN', '2023-07-21 06:49:26.775077+00');
 
-INSERT INTO public.cities(id, code, latitude, longitude, name, place_id, provider) VALUES (1, '10001', 40.7127753, -74.0059728, 'New York', 'ChIJOwg_06VPwokRYv534QaPC8g', 'GOOGLE_MAPS');
-INSERT INTO public.cities(id, code, latitude, longitude, name, place_id, provider) VALUES (2, '08701', 40.0583238, -74.4056612, 'New Jersey', 'ChIJn0AAnpX7wIkRjW0_-Ad70iw', 'GOOGLE_MAPS');
+INSERT INTO public.cities(id, latitude, longitude, name, place_id, provider) VALUES (1, 40.7127753, -74.0059728, 'New York', 'ChIJOwg_06VPwokRYv534QaPC8g', 'GOOGLE_MAPS');
+INSERT INTO public.cities(id, latitude, longitude, name, place_id, provider) VALUES (2, 40.0583238, -74.4056612, 'New Jersey', 'ChIJn0AAnpX7wIkRjW0_-Ad70iw', 'GOOGLE_MAPS');
+INSERT INTO public.cities(id, latitude, longitude, name, place_id, provider) VALUES (3, 43.5147118, 16.4435148, 'Split', 'ChIJF_W8a_xdNRMRmJ-0MfaPeaE', 'GOOGLE_MAPS');
+INSERT INTO public.cities(id, latitude, longitude, name, place_id, provider) VALUES (4, 59.32932349999999,18.0685808, 'Stockholm', 'ChIJywtkGTF2X0YRZnedZ9MnDag', 'GOOGLE_MAPS');
+INSERT INTO public.cities(id, latitude, longitude, name, place_id, provider) VALUES (5, -34.6036844, -58.3815591, 'Buenos Aires', 'ChIJvQz5TjvKvJURh47oiC6Bs6A','GOOGLE_MAPS');
 
-INSERT INTO public.locations(id, formatted_address, latitude, longitude, type, name, place_id, provider, city_id) VALUES (1, '20 W 34th St., New York, NY 10001, USA', 40.7484405, -73.98566439999999,'BUILDING','Empire State Building' , 'ChIJaXQRs6lZwokRY6EFpJnhNNE', 'GOOGLE_MAPS', 1);
-INSERT INTO public.locations(id, formatted_address, latitude, longitude, type, name, place_id, provider, city_id) VALUES (2, '199 Market St, Newark, NJ 07102, USA', 40.7354649, -74.1707638,'STREET', 'Market Street', 'ChIJIcjqdYJTwokRa0ArHlDqxTk', 'GOOGLE_MAPS', 1);
-INSERT INTO public.locations(id, formatted_address, latitude, longitude, type, name, place_id, provider, city_id) VALUES (3, '1165 Shakespeare Ave, Bronx, NY 10452, USA', 40.8360138, -73.92371989999999,'STAIRS', '' , 'ChIJM2hTrjr0wokRhvcoZV2JAX8', 'GOOGLE_MAPS', 1);
-INSERT INTO public.locations(id, formatted_address, latitude, longitude, type, name, place_id, provider, city_id) VALUES (4, '768 5th Ave, New York, NY 10019, USA', 40.7646318, -73.9743251,'HOTEL', 'The Plaza Hotel' , 'ChIJYaVdffBYwokRnTOoCzCq9mE', 'GOOGLE_MAPS', 1);
-INSERT INTO public.locations(id, formatted_address, latitude, longitude, type, name, place_id, provider, city_id) VALUES (5, '45 Rockefeller Plaza, New York, NY 10111, USA', 40.7587402, -73.97867359999999,'PLAZA', 'The Rockefeller Plaza', 'ChIJ9U1mz_5YwokRosza1aAk0jM', 'GOOGLE_MAPS', 1);
+INSERT INTO public.locations(id, post_code, formatted_address, latitude, longitude, type, name, place_id, provider, city_id) VALUES (1, '1001','20 W 34th St., New York, NY 10001, USA', 40.7484405, -73.98566439999999,'BUILDING','Empire State Building' , 'ChIJaXQRs6lZwokRY6EFpJnhNNE', 'GOOGLE_MAPS', 1);
+INSERT INTO public.locations(id, post_code, formatted_address, latitude, longitude, type, name, place_id, provider, city_id) VALUES (2, '07102', '199 Market St, Newark, NJ 07102, USA', 40.7354649, -74.1707638,'STREET', 'Market Street', 'ChIJIcjqdYJTwokRa0ArHlDqxTk', 'GOOGLE_MAPS', 1);
+INSERT INTO public.locations(id, post_code, formatted_address, latitude, longitude, type, name, place_id, provider, city_id) VALUES (3, '10452', '1165 Shakespeare Ave, Bronx, NY 10452, USA', 40.8360138, -73.92371989999999,'STAIRS', '' , 'ChIJM2hTrjr0wokRhvcoZV2JAX8', 'GOOGLE_MAPS', 1);
+INSERT INTO public.locations(id, post_code, formatted_address, latitude, longitude, type, name, place_id, provider, city_id) VALUES (4, '10019', '768 5th Ave, New York, NY 10019, USA', 40.7646318, -73.9743251,'HOTEL', 'The Plaza Hotel' , 'ChIJYaVdffBYwokRnTOoCzCq9mE', 'GOOGLE_MAPS', 1);
+INSERT INTO public.locations(id, post_code, formatted_address, latitude, longitude, type, name, place_id, provider, city_id) VALUES (5, '10111', '45 Rockefeller Plaza, New York, NY 10111, USA', 40.7587402, -73.97867359999999,'PLAZA', 'The Rockefeller Plaza', 'ChIJ9U1mz_5YwokRosza1aAk0jM', 'GOOGLE_MAPS', 1);
+INSERT INTO public.locations(id, post_code, formatted_address, latitude, longitude, type, name, place_id, provider, city_id) VALUES (6, '118 46', 'Sankt Paulsgatan 17, 118 46 Stockholm, Sweden', 59.31805509999999, 18.0673754,'CAFE', 'Kaffe', 'ChIJ_Qp85OR3X0YRt4lmUouTGPE', 'GOOGLE_MAPS', 4);
+
+
+INSERT INTO public.locations(id, post_code, formatted_address, latitude, longitude, type, name, place_id, provider, city_id) VALUES (7, '11224', '1213 Riegelmann Boardwalk, Brooklyn, NY 11224', 40.57326, -73.98013999999999,'BAR', 'Ruby’s Bar And Grill', 'ChIJJVw-9jREwokRZx6ejxg835A', 'GOOGLE_MAPS', 1);
+INSERT INTO public.locations(id, post_code, formatted_address, latitude, longitude, type, name, place_id, provider, city_id) VALUES (8, '11224', '801 Riegelmann Boardwalk, Brooklyn, NY 11224, USA', 40.5751417, -73.977632,'ROLLER_COASTER', 'The Cyclone Roller Coaster', 'ChIJXVNm2TVEwokRwkHm634rjvc', 'GOOGLE_MAPS', 1);
+INSERT INTO public.locations(id, post_code, formatted_address, latitude, longitude, type, name, place_id, provider, city_id) VALUES (9, '11224', '1310 Surf Ave, Brooklyn, NY 11224, USA', 40.5754059, -73.9813286,'FAST_FOOD', 'Nathan’s Famous Hot Dogs', 'ChIJD9aJFTVEwokRtvxxa6xAQ5g', 'GOOGLE_MAPS', 1);
+INSERT INTO public.locations(id, post_code, formatted_address, latitude, longitude, type, name, place_id, provider, city_id) VALUES (10, '11224', '1208 Surf Ave, Brooklyn, NY 11224, USA', 40.5754025, -73.9797681, 'BAR', 'The Freak Bar', 'ChIJFSKtoTVEwokR23zupCWc8jw', 'GOOGLE_MAPS', 1);
+
+
 
 INSERT INTO public.scenes(id, name, description, episode_name, episode_number, season, segment_type, start_at, end_at, fiction_id, location_id, user_id) VALUES (1, 'First scene, Arthur dancing', 'Arthur Fleck dances in a clown costume scene and a group of guys stole their banner', NULL, NULL, NULL, 'MINUTE', 3.23,4.56, 157, 2, 1);
 INSERT INTO public.scenes(id, name, description, episode_name, episode_number, season, segment_type, start_at, end_at, fiction_id, location_id, user_id) VALUES (2, 'King Kong climbing the Empire state', 'King Kong climbing the Empire state', NULL, NULL, NULL, 'MINUTE', 3.23,4.56, 161, 1, 1);
 INSERT INTO public.scenes(id, name, description, episode_name, episode_number, season, segment_type, start_at, end_at, fiction_id, location_id, user_id) VALUES (3, 'Joker stairs', 'The scene of Joker dancing down the stairs', NULL, NULL, NULL, 'MINUTE', 3.23,4.56, 157, 3, 1);
 INSERT INTO public.scenes(id, name, description, episode_name, episode_number, season, segment_type, start_at, end_at, fiction_id, location_id, user_id) VALUES (4, 'Kevin in the Plaza hotel', 'Kevin in the Plaza hotel', NULL, NULL, NULL, 'MINUTE', 3.23,4.56, 136, 4, 1);
 INSERT INTO public.scenes(id, name, description, episode_name, episode_number, season, segment_type, start_at, end_at, fiction_id, location_id, user_id) VALUES (5, 'Kevin finds his mum', 'Kevin finds his mum', NULL, NULL, NULL, 'MINUTE', 3.23,4.56, 136, 5, 1);
+INSERT INTO public.scenes(id, name, description, episode_name, episode_number, season, segment_type, start_at, end_at, fiction_id, location_id, user_id) VALUES (6, 'Mikael Blomkvist favorite cafe', 'Mikael Blomkvist favorite cafe', NULL, NULL, NULL, 'MINUTE',  3.23,4.56, 324, 6, 1);
+INSERT INTO public.scenes(id, name, description, episode_name, episode_number, season, segment_type, start_at, end_at, fiction_id, location_id, user_id) VALUES (7, 'Scene in Ruby´s bar', 'This is the place where Ginny and Caroline work', NULL, NULL, NULL, 'MINUTE',  3.23,4.56, 325, 7, 1);
+INSERT INTO public.scenes(id, name, description, episode_name, episode_number, season, segment_type, start_at, end_at, fiction_id, location_id, user_id) VALUES (8, 'Gangsters'' Visit to Humpty', 'As Humpty works at the carousel, two gangsters seek him out, pressing questions about Caroline', NULL, NULL, NULL, 'MINUTE',  3.23, 4.56, 325, 8, 1);
+INSERT INTO public.scenes(id, name, description, episode_name, episode_number, season, segment_type, start_at, end_at, fiction_id, location_id, user_id) VALUES (9, 'Nathan’s Famous Hot Dogs', 'We can see Nathan’s Famous Hot Dogs in some scenes along the movie', NULL, NULL, NULL, 'MINUTE',  3.23, 4.56, 325, 9, 1);
+INSERT INTO public.scenes(id, name, description, episode_name, episode_number, season, segment_type, start_at, end_at, fiction_id, location_id, user_id) VALUES (10, 'Scene in the Freak bar', 'Mickey and Ginny go for a drink.', NULL, NULL, NULL, 'MINUTE',  3.23, 4.56, 325, 10, 1);
+
