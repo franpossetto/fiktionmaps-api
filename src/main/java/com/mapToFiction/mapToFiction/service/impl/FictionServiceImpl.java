@@ -123,7 +123,7 @@ public class FictionServiceImpl implements FictionService {
         }
 
         // Checking if a location with the given placeId already exists
-        Optional<Location> existingLocation = locationRepository.findByPlaceId(locationDto.getPlace_id());
+        Optional<Location> existingLocation = locationRepository.findByPlaceId(locationDto.getPlaceId());
 
         Location location;
         if(existingLocation.isPresent()) {
@@ -132,7 +132,7 @@ public class FictionServiceImpl implements FictionService {
         } else {
             // If no such location exists, we create a new one
             location = locationMapper.toEntity(locationDto);
-            Long cityId = locationDto.getCity_id();
+            Long cityId = locationDto.getCityId();
             Optional<City> cityOpt = cityRepository.findById(cityId);
             if (cityOpt.isPresent()) {
                 location.setCity(cityOpt.get());
