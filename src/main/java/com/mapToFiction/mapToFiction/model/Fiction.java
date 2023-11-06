@@ -15,7 +15,7 @@ import java.util.List;
 public class Fiction {
 
     public enum Type {
-        MOVIE, TV_SHOW, BOOK, SONG
+        MOVIE, TV_SHOW, EPISODE, BOOK, SONG
     }
 
     public enum Provider {

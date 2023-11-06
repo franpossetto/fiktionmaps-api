@@ -33,8 +33,9 @@ public class Scene {
     private String season;
     private String episodeName;
     private String episodeNumber;
-    private long startAt;
-    private long endAt;
+    private Long startAt;
+    private Long endAt;
+    private String screenShot;
 
     @Enumerated(EnumType.STRING)
     private SegmentType segmentType;

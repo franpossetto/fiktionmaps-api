@@ -139,7 +139,7 @@ public class FictionResource {
 
         try {
             fictionService.addLocationToScene(id, scene_id, locationDto);
-            String responseMessage = "Location '" + locationDto.getFormatted_address() + "' has been successfully added to the scene '" + scene_id + "'.";
+            String responseMessage = "Location '" + locationDto.getFormattedAddress() + "' has been successfully added to the scene '" + scene_id + "'.";
             return ResponseEntity.status(HttpStatus.CREATED).body(responseMessage);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Fiction or scene not found");

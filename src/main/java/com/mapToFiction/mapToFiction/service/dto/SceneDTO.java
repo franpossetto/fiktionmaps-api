@@ -18,6 +18,7 @@ public class SceneDTO {
     private String episodeNumber;
     private Long startAt;
     private Long endAt;
+    private String screenShot;
     private Scene.SegmentType segmentType;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -18,12 +18,10 @@ public class SceneResource {
     private final SceneService sceneService;
     private final FictionService fictionService;
 
-
     public SceneResource(SceneService sceneService, FictionService fictionService) {
         this.sceneService = sceneService;
         this.fictionService = fictionService;
     }
-
 
     @PostMapping("/create")
     @CrossOrigin

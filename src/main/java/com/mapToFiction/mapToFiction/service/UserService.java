@@ -11,7 +11,6 @@ public interface UserService {
     UserDTO updateUser(UserDTO userDto, Long id);
     void deleteUser(Long id);
     List<UserDTO> getAllUsers();
-
     UserDTO getCurrentUser(String externalId);
 
 }
