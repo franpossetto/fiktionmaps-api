@@ -5,7 +5,7 @@ services:
     environment:
       - POSTGRES_USER=francisco
       - POSTGRES_PASSWORD=francisco
-      - POSTGRES_DB=mapToFiction
+      - POSTGRES_DB=fiktionMaps
       - POSTGRES_HOST=localhost
     ports:
       - 5432:5432
