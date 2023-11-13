@@ -95,9 +95,9 @@ public class FictionServiceImpl implements FictionService {
         }
         Fiction fiction = fictionOpt.get();
 
-        Optional<User> userOpt = userRepository.findById(sceneDto.getUser_id());
+        Optional<User> userOpt = userRepository.findById(sceneDto.getUserId());
         if (!userOpt.isPresent()) {
-            throw new NoSuchElementException("No User found with id " + sceneDto.getUser_id());
+            throw new NoSuchElementException("No User found with id " + sceneDto.getUserId());
         }
         User user = userOpt.get();
 

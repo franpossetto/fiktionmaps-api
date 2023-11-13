@@ -24,7 +24,7 @@ public class Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "locationSeq")
-    @SequenceGenerator(name = "locationSeq", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "locationSeq", initialValue = 1000, allocationSize = 1)
     private Long id;
 
     private String name;
@@ -40,7 +40,7 @@ public class Location {
     @JsonIgnore
     private List<Scene> scenes = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "city_id")
     private City city;
 

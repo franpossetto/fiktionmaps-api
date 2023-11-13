@@ -24,8 +24,8 @@ public class Scene {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "locationSeq")
-    @SequenceGenerator(name = "locationSeq", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sceneSeq")
+    @SequenceGenerator(name = "sceneSeq", initialValue = 1000, allocationSize = 1)
     private Long id;
 
     private String name;
