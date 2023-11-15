@@ -11,6 +11,7 @@ I lived in Sweden because of Stieg Larsson's "Millennium". In Croatia, I was dra
 ![Docker](https://img.shields.io/badge/Docker-2496ED.svg?&style=for-the-badge&logo=docker&logoColor=white)
 ![AWS Elastic Beanstalk](https://img.shields.io/badge/AWS%20Elastic%20Beanstalk-FF9900.svg?&style=for-the-badge&logo=awselasticbeanstalk&logoColor=white)
 
+
 ## Catalogue Overview
 ![Cities](https://img.shields.io/badge/Cities-18+-blue.svg?&style=for-the-badge)
 ![Movies](https://img.shields.io/badge/Movies-328+-brightgreen.svg?&style=for-the-badge)
