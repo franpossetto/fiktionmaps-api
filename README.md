@@ -5,10 +5,12 @@ The project is in its early stages and, although I am not the first to conceive 
 I lived in Sweden because of Stieg Larsson's "Millennium". In Croatia, I was drawn to the charm of "Game of Thrones" and its cats. Now in New York, because of Woody Allen movies. 
 
 ## Backend
-![Java](https://img.shields.io/badge/Java-FF0000.svg?&style=for-the-badge&logo=java&logoColor=white)
+![Java](https://img.shields.io/badge/Java-007396.svg?&style=for-the-badge&logo=java&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F.svg?&style=for-the-badge&logo=springboot&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791.svg?&style=for-the-badge&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED.svg?&style=for-the-badge&logo=docker&logoColor=white)
+![AWS Elastic Beanstalk](https://img.shields.io/badge/AWS%20Elastic%20Beanstalk-FF9900.svg?&style=for-the-badge&logo=awselasticbeanstalk&logoColor=white)
+
 
 ## Catalogue Overview
 ![Cities](https://img.shields.io/badge/Cities-18+-blue.svg?&style=for-the-badge)
