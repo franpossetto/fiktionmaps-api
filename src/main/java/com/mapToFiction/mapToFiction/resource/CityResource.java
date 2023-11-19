@@ -48,7 +48,7 @@ public class CityResource {
     @GetMapping("/{id}")
     @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
-    public CityDTO GetCitiesById(@RequestHeader("Authorization") String token, @PathVariable Long id){
+    public CityDTO GetCitiesById(@PathVariable Long id){
         return cityService.getCityById(id);
     }
 
