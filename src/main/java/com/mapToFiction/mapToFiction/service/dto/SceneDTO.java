@@ -26,6 +26,6 @@ public class SceneDTO {
 
     private LocationDTO location;
 
-    private Long user_id;
+    private Long userId;
 }
 

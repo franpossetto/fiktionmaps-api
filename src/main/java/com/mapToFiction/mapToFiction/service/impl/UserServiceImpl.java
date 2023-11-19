@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO createUser(UserDTO userDto){
         User user = userMapper.toEntity(userDto);
-        user.setEmailVerified(false);
+        user.setEmailVerified(true);
         User createdUser = userRepository.save(user);
         return userMapper.toDto(createdUser);
     }
