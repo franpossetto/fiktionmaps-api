@@ -26,5 +26,6 @@ public class SceneDTO {
     @JsonIgnore
     private Long fictionId;
 
+    @JsonIgnore
     private Long createdBy;
 }

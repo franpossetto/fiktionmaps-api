@@ -18,8 +18,8 @@ import java.util.List;
 public class City {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "citySeq")
-    @SequenceGenerator(name = "citySeq", initialValue = 1000, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cities_id_sequence")
+    @SequenceGenerator(name = "cities_id_sequence", allocationSize = 1)
     private Long id;
     private String name;
     private String placeId;

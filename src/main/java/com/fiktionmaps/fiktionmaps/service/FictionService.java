@@ -1,5 +1,6 @@
 package com.fiktionmaps.fiktionmaps.service;
 
+import com.fiktionmaps.fiktionmaps.model.Fiction;
 import com.fiktionmaps.fiktionmaps.service.dto.CityDTO;
 import com.fiktionmaps.fiktionmaps.service.dto.FictionDTO;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +15,10 @@ public interface FictionService {
 
     void delete(Long id);
 
-    ResponseEntity<List<FictionDTO>> getAll();
+    List<FictionDTO> getAll();
 
-    ResponseEntity<List<FictionDTO>> getFictionsByCity(Long cityId);
+    List<FictionDTO> getFictionsByCity(Long cityId);
+
+    Fiction findById(Long id);
 
 }

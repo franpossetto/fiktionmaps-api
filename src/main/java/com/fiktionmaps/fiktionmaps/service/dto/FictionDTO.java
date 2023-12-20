@@ -21,7 +21,7 @@ public class FictionDTO {
     private List<PlaceDTO> places;
     private Integer year;
     private Integer duration;
-    private Integer externalId;
+    private String externalId;
     private Fiction.Provider provider;
     private String imgUrl;
 }

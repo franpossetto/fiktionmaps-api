@@ -18,12 +18,13 @@ import java.util.List;
 public class Place {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "placeSeq")
-    @SequenceGenerator(name = "placeSeq", initialValue = 1000, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "places_id_sequence")
+    @SequenceGenerator(name = "places_id_sequence", allocationSize = 1)
     private Long id;
 
     private String name;
     private String description;
+    private String screenshot;
 
     @ManyToOne
     @JoinColumn(name = "fiction_id")

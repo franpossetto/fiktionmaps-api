@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS public.places (
     id bigint PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
+    screenshot character varying(255),
     location_id INT,
     fiction_id INT,
     created_by INT,
@@ -18,3 +19,6 @@ CREATE TABLE IF NOT EXISTS public.places (
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 );
+
+CREATE SEQUENCE places_id_sequence INCREMENT BY 1 START WITH 1000;
+ALTER TABLE public.locations ALTER COLUMN id SET DEFAULT nextval('places_id_sequence');

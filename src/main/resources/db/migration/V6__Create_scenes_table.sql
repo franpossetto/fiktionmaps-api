@@ -21,5 +21,7 @@ CREATE TABLE IF NOT EXISTS public.scenes
             REFERENCES public.places (id) MATCH SIMPLE
             ON UPDATE NO ACTION
             ON DELETE NO ACTION
+);
 
-)
+CREATE SEQUENCE scenes_id_sequence INCREMENT BY 1 START WITH 1000;
+ALTER TABLE public.scenes ALTER COLUMN id SET DEFAULT nextval('scenes_id_sequence');

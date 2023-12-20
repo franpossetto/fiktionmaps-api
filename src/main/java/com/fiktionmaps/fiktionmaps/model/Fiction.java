@@ -18,8 +18,8 @@ import java.util.List;
 public class Fiction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "fictionSeq")
-    @SequenceGenerator(name = "fictionSeq", initialValue = 1000, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "fictions_id_sequence")
+    @SequenceGenerator(name = "fictions_id_sequence", allocationSize = 1)
     private Long id;
 
     private String name;

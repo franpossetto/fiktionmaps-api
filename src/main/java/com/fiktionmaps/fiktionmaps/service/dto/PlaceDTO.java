@@ -16,10 +16,11 @@ public class PlaceDTO {
     private String name;
     private String description;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Long fictionId;
+    private String fictionId;
 
     private LocationDTO location;
     private List<SceneDTO> scenes;
-    private String imgUrl;
+    private String screenshot;
+    private Long userId;
+
 }

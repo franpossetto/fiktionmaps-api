@@ -13,10 +13,8 @@ public interface UserService {
 
     void delete(Long id);
 
-    UserDTO getById(Long id);
-
     List<UserDTO> getAll();
 
-    UserDTO getCurrentUser(Long id);
+    UserDTO getCurrentUser(String externalUserId);
 
 }

@@ -16,4 +16,7 @@ CREATE TABLE IF NOT EXISTS public.locations
         REFERENCES public.cities (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
-)
+);
+
+CREATE SEQUENCE locations_id_sequence INCREMENT BY 1 START WITH 1000;
+ALTER TABLE public.locations ALTER COLUMN id SET DEFAULT nextval('locations_id_sequence');

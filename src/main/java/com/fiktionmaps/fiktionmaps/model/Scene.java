@@ -15,8 +15,8 @@ import lombok.ToString;
 public class Scene {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sceneSeq")
-    @SequenceGenerator(name = "sceneSeq", initialValue = 1000, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "scenes_id_sequence")
+    @SequenceGenerator(name = "scenes_id_sequence", initialValue = 1000, allocationSize = 1)
     private Long id;
 
     private String name;

@@ -43,26 +43,19 @@ public class FictionServiceImpl implements FictionService {
     }
 
     @Override
-    public ResponseEntity<List<FictionDTO>> getAll() {
+    public List<FictionDTO> getAll() {
         List<Fiction> fictions = fictionRepository.findAll();
-        List<FictionDTO> fictionDTOs = fictionMapper.toDtoList(fictions);
-
-        if (fictionDTOs.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        return new ResponseEntity<>(fictionDTOs, HttpStatus.OK);
+        return fictionMapper.toDtoList(fictions);
     }
 
     @Override
-    public ResponseEntity<List<FictionDTO>> getFictionsByCity(Long cityId) {
+    public List<FictionDTO> getFictionsByCity(Long cityId) {
         List<Fiction> fictions = fictionRepository.findByCityId(cityId);
-        List<FictionDTO> fictionDTOs = fictionMapper.toDtoList(fictions);
+        return fictionMapper.toDtoList(fictions);
+    }
 
-        if (fictionDTOs.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        return new ResponseEntity<>(fictionDTOs, HttpStatus.OK);
+    @Override
+    public Fiction findById(Long id) {
+        return fictionRepository.findById(id).get();
     }
 }

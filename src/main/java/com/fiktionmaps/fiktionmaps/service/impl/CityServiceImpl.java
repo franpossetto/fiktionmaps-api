@@ -5,9 +5,11 @@ import com.fiktionmaps.fiktionmaps.model.City;
 import com.fiktionmaps.fiktionmaps.repository.CityRepository;
 import com.fiktionmaps.fiktionmaps.service.CityService;
 import com.fiktionmaps.fiktionmaps.service.dto.CityDTO;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CityServiceImpl implements CityService {
@@ -39,7 +41,8 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public CityDTO getById(Long id) {
-        return cityMapper.toDto(cityRepository.findById(id).get());
+        Optional<City> cityOptional = cityRepository.findById(id);
+        return cityOptional.map(cityMapper::toDto).orElse(null);
     }
 
     @Override

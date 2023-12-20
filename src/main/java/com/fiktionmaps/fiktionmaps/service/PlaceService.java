@@ -1,13 +1,14 @@
 package com.fiktionmaps.fiktionmaps.service;
 
+import com.fiktionmaps.fiktionmaps.model.Fiction;
 import com.fiktionmaps.fiktionmaps.service.dto.PlaceDTO;
 
 import java.util.List;
 
 public interface PlaceService {
-    PlaceDTO create(PlaceDTO cityDTO);
+    PlaceDTO create(PlaceDTO placeDTO, Fiction fiction);
 
-    PlaceDTO update(Long id, PlaceDTO cityDTO);
+    PlaceDTO update(Long id, PlaceDTO placeDto);
 
     void delete(Long id);
 
