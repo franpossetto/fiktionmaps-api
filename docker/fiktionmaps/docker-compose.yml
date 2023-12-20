@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=francisco
+      - POSTGRES_PASSWORD=francisco
+      - POSTGRES_DB=fiktionmaps2
+      - POSTGRES_HOST=localhost
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    container_name: fiktion-postgres
+
+  app:
+    build:
+      context: ../../
+      dockerfile: Dockerfile
+    container_name: fiktion-api
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/fiktionmaps2
+      - SPRING_DATASOURCE_USERNAME=francisco
+      - SPRING_DATASOURCE_PASSWORD=francisco

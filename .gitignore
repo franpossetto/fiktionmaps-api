@@ -5,8 +5,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-/m2docker/data/
-/docker/data/
+/docker/fiktionmaps/data/
 serviceAccountKey.json
 
 ### STS ###

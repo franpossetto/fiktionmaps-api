@@ -1,10 +1,11 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '2.7.8-SNAPSHOT'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'org.springframework.boot' version '3.2.0'
+	id 'io.spring.dependency-management' version '1.1.4'
+	id 'org.flywaydb.flyway' version '7.5.4'
 }
 
-group = 'com.mapToFiction'
+group = 'com.fiktionmaps'
 version = '0.0.1-SNAPSHOT'
 
 configurations {
@@ -22,16 +23,30 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 	implementation 'com.google.firebase:firebase-admin:9.2.0'
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
-	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2', 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.0'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.0', 'io.jsonwebtoken:jjwt-jackson:0.12.0'
+	implementation 'javax.servlet:javax.servlet-api:4.0.1'
+
+}
+
+ext.flywayProps = new Properties()
+flywayProps.load(new FileInputStream(this.projectDir.absolutePath + "/src/main/resources/application-dev.properties"))
+
+flyway {
+	url = flywayProps['spring.datasource.url']
+	user = flywayProps['spring.datasource.username']
+	password = flywayProps['spring.datasource.password']
+	locations = ['filesystem:src/main/resources/db/migration']
+	baselineOnMigrate = true
 }
 
 tasks.named('test') {
