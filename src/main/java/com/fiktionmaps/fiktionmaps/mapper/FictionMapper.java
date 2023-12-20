@@ -7,5 +7,4 @@ import com.fiktionmaps.fiktionmaps.service.dto.FictionDTO;
 
 @Mapper(componentModel = "spring", uses = PlaceMapper.class)
 public interface FictionMapper extends EntityMapper<FictionDTO, Fiction> {
-
 }
