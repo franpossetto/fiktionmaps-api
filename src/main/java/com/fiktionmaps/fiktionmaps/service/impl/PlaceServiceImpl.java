@@ -2,18 +2,17 @@ package com.fiktionmaps.fiktionmaps.service.impl;
 
 import com.fiktionmaps.fiktionmaps.mapper.LocationMapper;
 import com.fiktionmaps.fiktionmaps.mapper.PlaceMapper;
-import com.fiktionmaps.fiktionmaps.model.Fiction;
-import com.fiktionmaps.fiktionmaps.model.Location;
-import com.fiktionmaps.fiktionmaps.model.Place;
-import com.fiktionmaps.fiktionmaps.model.User;
+import com.fiktionmaps.fiktionmaps.model.*;
 import com.fiktionmaps.fiktionmaps.repository.LocationRepository;
 import com.fiktionmaps.fiktionmaps.repository.PlaceRepository;
 import com.fiktionmaps.fiktionmaps.service.PlaceService;
 import com.fiktionmaps.fiktionmaps.service.dto.FictionDTO;
 import com.fiktionmaps.fiktionmaps.service.dto.LocationDTO;
 import com.fiktionmaps.fiktionmaps.service.dto.PlaceDTO;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 import java.util.Optional;
@@ -68,15 +67,44 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public PlaceDTO update(Long id, PlaceDTO cityDTO) {
-        return null;
+    public PlaceDTO update(Long id, PlaceDTO placeDTO) {
+        Place place = placeRepository.findById(id).orElseThrow(() -> new RuntimeException("Place not found with id " + id));
+        place.setName(placeDTO.getName());
+        place.setDescription(placeDTO.getDescription());
+        place.setScreenshot(placeDTO.getScreenshot());
+        place.setPublished(false);
+
+        Optional<Location> providedLocation = locationRepository.findByPlaceId(placeDTO.getLocation().getPlaceId());
+        if (providedLocation.isEmpty()) {
+            providedLocation = Optional.ofNullable(locationMapper.toEntity(placeDTO.getLocation()));
+        }
+
+        place.setLocation(providedLocation.get());
+        return placeMapper.toDto(placeRepository.save(place));
+    }
+
+    @Override
+    public PlaceDTO approve(Long id, Long cityId) {
+        Place place = placeRepository.findById(id).orElseThrow(() -> new RuntimeException("Place not found with id " + id));
+        Location location = place.getLocation();
+
+        if(location.getCity() == null){
+            City city = new City();
+            city.setId(cityId);
+            location.setCity(city);
+        }
+
+        place.setLocation(location);
+        place.setPublished(true);
+
+        return placeMapper.toDto(placeRepository.save(place));
     }
 
     @Override
     @Transactional
     public void delete(Long placeId) {
         Place place = placeRepository.findById(placeId)
-                .orElseThrow(() -> new RuntimeException("Place no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Place no found"));
 
         Location location = place.getLocation();
         placeRepository.delete(place);
@@ -88,7 +116,9 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public PlaceDTO getById(Long id) {
-        return null;
+        return placeRepository.findById(id)
+                .map(placeMapper::toDto)
+                .orElseThrow(() -> new EntityNotFoundException("Place not found with id: " + id));
     }
 
     @Override
@@ -96,4 +126,16 @@ public class PlaceServiceImpl implements PlaceService {
         List<Place> places = placeRepository.findAll();
         return placeMapper.toDtoList(places);
     }
+
+    @Override
+    public List<PlaceDTO> getMyPlaces() {
+        return null;
+    }
+
+    @Override
+    public List<PlaceDTO> getMyPlacesNotApproved() {
+        return null;
+    }
+
+
 }

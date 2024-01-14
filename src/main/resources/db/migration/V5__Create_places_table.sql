@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS public.places (
     location_id INT,
     fiction_id INT,
     created_by INT,
+    published BOOLEAN,
     CONSTRAINT fk_place_location FOREIGN KEY (location_id)
         REFERENCES public.locations (id) MATCH SIMPLE
         ON UPDATE NO ACTION

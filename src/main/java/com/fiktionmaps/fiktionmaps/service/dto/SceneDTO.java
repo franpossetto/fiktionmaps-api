@@ -22,6 +22,7 @@ public class SceneDTO {
     private Long endAt;
     private String screenshot;
     private Scene.SegmentType segmentType;
+    private Boolean published;
 
     @JsonIgnore
     private Long fictionId;

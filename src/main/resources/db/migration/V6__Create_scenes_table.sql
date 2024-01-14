@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS public.scenes
     screenshot character varying(255),
     created_by bigint NOT NULL,
     place_id bigint,
+    published BOOLEAN,
     CONSTRAINT pk_scenes PRIMARY KEY (id),
     CONSTRAINT fk_scene_user FOREIGN KEY (created_by)
         REFERENCES public.app_user (id) MATCH SIMPLE

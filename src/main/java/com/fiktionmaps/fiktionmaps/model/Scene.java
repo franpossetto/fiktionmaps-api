@@ -27,6 +27,7 @@ public class Scene {
     private Long startAt;
     private Long endAt;
     private String screenshot;
+    private Boolean published;
 
     @Enumerated(EnumType.STRING)
     private SegmentType segmentType;

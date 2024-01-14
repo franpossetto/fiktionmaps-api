@@ -1,10 +1,12 @@
 package com.fiktionmaps.fiktionmaps.service.impl;
 
+import com.fiktionmaps.fiktionmaps.config.JwtService;
 import com.fiktionmaps.fiktionmaps.mapper.UserMapper;
 import com.fiktionmaps.fiktionmaps.model.User;
 import com.fiktionmaps.fiktionmaps.repository.UserRepository;
 import com.fiktionmaps.fiktionmaps.service.UserService;
 import com.fiktionmaps.fiktionmaps.service.dto.UserDTO;
+import com.google.firebase.auth.FirebaseAuthException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,16 +16,19 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final JwtService jwtService;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper){
+
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, JwtService jwtService){
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.jwtService = jwtService;
     }
 
     @Override
     public UserDTO create(UserDTO userDto){
         User user = userMapper.toEntity(userDto);
-        user.setEmailVerified(true);
+        //user.setEmailVerified(true);
         User createdUser = userRepository.save(user);
         return userMapper.toDto(createdUser);
     }
@@ -55,5 +60,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getCurrentUser(String externalUserId) {
         return userMapper.toDto(userRepository.findByExternalUserId(externalUserId));
+    }
+
+    @Override
+    public UserDTO getUserFromToken(String token) {
+        String firebaseId = null;
+        try {
+            firebaseId = jwtService.extractUserId(token);
+        } catch (FirebaseAuthException e) {
+            throw new RuntimeException(e);
+        }
+        return userMapper.toDto(userRepository.findByExternalUserId(firebaseId));
     }
 }

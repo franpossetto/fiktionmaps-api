@@ -27,7 +27,7 @@ public class City {
     private Double longitude;
     private String provider;
 
-    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "city")
     private List<Location> locations = new ArrayList<>();
 
 }

@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS public.fictions
     duration int,
     img_url character varying(255),
     created_by bigint,
+    published BOOLEAN,
     CONSTRAINT pk_fictions PRIMARY KEY (id),
     CONSTRAINT fk_fiction_user FOREIGN KEY (created_by)
         REFERENCES public.app_user (id) MATCH SIMPLE

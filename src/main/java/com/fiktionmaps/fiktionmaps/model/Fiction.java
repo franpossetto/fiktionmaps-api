@@ -27,6 +27,7 @@ public class Fiction {
     private Integer year;
     private Integer duration;
     private String imgUrl;
+    private Boolean published;
 
     @Enumerated(EnumType.STRING)
     private Type type;

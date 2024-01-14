@@ -25,12 +25,13 @@ public class Place {
     private String name;
     private String description;
     private String screenshot;
+    private Boolean published;
 
     @ManyToOne
     @JoinColumn(name = "fiction_id")
     private Fiction fiction;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "location_id")
     private Location location;
 

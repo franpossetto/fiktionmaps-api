@@ -17,4 +17,5 @@ public interface UserService {
 
     UserDTO getCurrentUser(String externalUserId);
 
+    UserDTO getUserFromToken(String token);
 }

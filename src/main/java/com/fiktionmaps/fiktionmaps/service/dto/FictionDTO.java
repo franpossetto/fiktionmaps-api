@@ -24,4 +24,5 @@ public class FictionDTO {
     private String externalId;
     private Fiction.Provider provider;
     private String imgUrl;
+    private Boolean published;
 }

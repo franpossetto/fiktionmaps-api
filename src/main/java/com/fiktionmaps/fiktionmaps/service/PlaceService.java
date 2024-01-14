@@ -15,4 +15,9 @@ public interface PlaceService {
     PlaceDTO getById(Long id);
 
     List<PlaceDTO> getAll();
+
+    List<PlaceDTO> getMyPlaces();
+    List<PlaceDTO> getMyPlacesNotApproved();
+
+    PlaceDTO approve(Long id, Long cityId);
 }

@@ -15,12 +15,10 @@ public class PlaceDTO {
     private Long id;
     private String name;
     private String description;
-
     private String fictionId;
-
     private LocationDTO location;
     private List<SceneDTO> scenes;
     private String screenshot;
     private Long userId;
-
+    private Boolean published;
 }
