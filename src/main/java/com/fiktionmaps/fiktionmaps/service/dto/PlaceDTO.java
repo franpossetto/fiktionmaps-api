@@ -20,5 +20,6 @@ public class PlaceDTO {
     private List<SceneDTO> scenes;
     private String screenshot;
     private Long userId;
+    private String userEmail;
     private Boolean published;
 }

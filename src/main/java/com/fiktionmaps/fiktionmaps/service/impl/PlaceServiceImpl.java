@@ -19,14 +19,10 @@ import java.util.Optional;
 
 @Service
 public class PlaceServiceImpl implements PlaceService {
-
     private PlaceRepository placeRepository;
     private PlaceMapper placeMapper;
-
     private LocationMapper locationMapper;
-
     private LocationRepository locationRepository;
-
 
     public PlaceServiceImpl(PlaceRepository placeRepository, PlaceMapper placeMapper, LocationMapper locationMapper, LocationRepository locationRepository){
         this.placeRepository=placeRepository;
@@ -128,7 +124,7 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public List<PlaceDTO> getMyPlaces() {
+    public List<PlaceDTO> getPlacesbyUserId(Long userId) {
         return null;
     }
 

@@ -8,6 +8,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {LocationMapper.class, SceneMapper.class, FictionMapper.class})
 public interface PlaceMapper extends EntityMapper<PlaceDTO, Place> {
     @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "user.email", target = "userEmail")
     @Mapping(source = "fiction.id", target = "fictionId")
     PlaceDTO toDto(Place place);
 }

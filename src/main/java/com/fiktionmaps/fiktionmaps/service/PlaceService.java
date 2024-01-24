@@ -16,7 +16,7 @@ public interface PlaceService {
 
     List<PlaceDTO> getAll();
 
-    List<PlaceDTO> getMyPlaces();
+    List<PlaceDTO> getPlacesbyUserId(Long userId);
     List<PlaceDTO> getMyPlacesNotApproved();
 
     PlaceDTO approve(Long id, Long cityId);

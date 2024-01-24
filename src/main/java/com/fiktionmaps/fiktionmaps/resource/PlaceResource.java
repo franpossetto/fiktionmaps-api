@@ -6,6 +6,7 @@ import com.fiktionmaps.fiktionmaps.model.Location;
 import com.fiktionmaps.fiktionmaps.model.Place;
 import com.fiktionmaps.fiktionmaps.repository.PlaceRepository;
 import com.fiktionmaps.fiktionmaps.service.PlaceService;
+import com.fiktionmaps.fiktionmaps.service.UserService;
 import com.fiktionmaps.fiktionmaps.service.dto.LocationDTO;
 import com.fiktionmaps.fiktionmaps.service.dto.PlaceDTO;
 import org.springframework.http.HttpStatus;
@@ -22,12 +23,15 @@ public class PlaceResource {
 
     private PlaceService placeService;
 
+    private UserService userService;
+
     private PlaceMapper placeMapper;
 
-    public PlaceResource(PlaceRepository placeRepository, PlaceMapper placeMapper, PlaceService placeService){
+    public PlaceResource(PlaceRepository placeRepository, PlaceMapper placeMapper, PlaceService placeService, UserService userService){
         this.placeRepsitory = placeRepository;
         this.placeMapper = placeMapper;
         this.placeService = placeService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -35,6 +39,14 @@ public class PlaceResource {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<PlaceDTO>> getPlaces(){
         List<Place> places = placeRepsitory.findAll();
+        return new ResponseEntity<>(placeMapper.toDtoList(places), HttpStatus.OK);
+    }
+
+    @GetMapping("/user")
+    @CrossOrigin
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<PlaceDTO>> getPlacesByUser(@RequestHeader("Authorization") String token){
+        List<Place> places = placeRepsitory.getPlacesByUserId(userService.getUserFromToken(token).getId());
         return new ResponseEntity<>(placeMapper.toDtoList(places), HttpStatus.OK);
     }
 
@@ -57,7 +69,17 @@ public class PlaceResource {
     @PutMapping("/{id}/approve")
     @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<PlaceDTO> approvePlace(@RequestHeader("Authorization") String token, @PathVariable Long id, @RequestParam Long cityId) {
-        PlaceDTO place = placeService.approve(id, cityId);
-        return ResponseEntity.ok(place);    }
+    public ResponseEntity<?> approvePlace(@RequestHeader("Authorization") String token, @PathVariable Long id, @RequestParam Long cityId) {
+        PlaceDTO place = placeService.getById(id);
+        Long currentUser = userService.getUserFromToken(token).getId();
+        if(place == null || currentUser == null){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Place and user must exists");
+        }
+        if (currentUser.equals(place.getUserId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You cannot approve a place that you created.");
+        } else {
+            PlaceDTO p = placeService.approve(id, cityId);
+            return ResponseEntity.ok(p);
+        }
+    }
 }
