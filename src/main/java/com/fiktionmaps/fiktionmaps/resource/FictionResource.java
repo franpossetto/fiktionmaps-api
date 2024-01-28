@@ -60,11 +60,6 @@ public class FictionResource {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<FictionDTO>> getFictionsByCityId(@PathVariable Long cityId) {
         List<FictionDTO> fictionDTOs = fictionService.getFictionsByCity(cityId);
-
-        if (fictionDTOs.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
         return new ResponseEntity<>(fictionDTOs, HttpStatus.OK);
     }
 

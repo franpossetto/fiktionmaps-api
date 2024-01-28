@@ -33,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 FirebaseToken t = jwtService.verifyToken(jwt);
 
-                if (t.getClaims().containsKey("user_id")) {
+                if (t.isEmailVerified() && t.getClaims().containsKey("user_id")) {
                     filterChain.doFilter(request, response);
                     return;
                 } else {
@@ -50,7 +50,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-
-
 
 }
