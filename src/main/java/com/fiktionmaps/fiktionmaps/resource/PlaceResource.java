@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/api/v1/places")
 public class PlaceResource {
 
-    private PlaceRepository placeRepsitory;
+    private PlaceRepository placeRepository;
 
     private PlaceService placeService;
 
@@ -28,17 +28,34 @@ public class PlaceResource {
     private PlaceMapper placeMapper;
 
     public PlaceResource(PlaceRepository placeRepository, PlaceMapper placeMapper, PlaceService placeService, UserService userService){
-        this.placeRepsitory = placeRepository;
+        this.placeRepository = placeRepository;
         this.placeMapper = placeMapper;
         this.placeService = placeService;
         this.userService = userService;
     }
 
+//    @GetMapping
+//    @CrossOrigin
+//    @ResponseStatus(HttpStatus.OK)
+//    public ResponseEntity<List<PlaceDTO>> getPlaces(){
+//        List<Place> places = placeRepository.findAll();
+//        return new ResponseEntity<>(placeMapper.toDtoList(places), HttpStatus.OK);
+//    }
+
     @GetMapping
     @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<PlaceDTO>> getPlaces(){
-        List<Place> places = placeRepsitory.findAll();
+    public ResponseEntity<List<PlaceDTO>> getFilteredPlaces(@RequestParam(required = false) Boolean approved){
+        List<Place> places;
+        if (approved != null) {
+            if (approved) {
+                places = placeRepository.findByPublished();
+            } else {
+                places = placeRepository.findByNotPublished();
+            }
+        } else {
+            places = placeRepository.findAll();
+        }
         return new ResponseEntity<>(placeMapper.toDtoList(places), HttpStatus.OK);
     }
 
@@ -46,7 +63,7 @@ public class PlaceResource {
     @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<PlaceDTO>> getPlacesByUser(@RequestHeader("Authorization") String token){
-        List<Place> places = placeRepsitory.getPlacesByUserId(userService.getUserFromToken(token).getId());
+        List<Place> places = placeRepository.getPlacesByUserId(userService.getUserFromToken(token).getId());
         return new ResponseEntity<>(placeMapper.toDtoList(places), HttpStatus.OK);
     }
 
