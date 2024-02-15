@@ -38,8 +38,8 @@ dependencies {
 
 }
 
-ext.flywayProps = new Properties()
-flywayProps.load(new FileInputStream(this.projectDir.absolutePath + "/src/main/resources/application-dev.properties"))
+/*ext.flywayProps = new Properties()
+flywayProps.load(new FileInputStream(this.projectDir.absolutePath + "/src/main/resources/application.properties"))
 
 flyway {
 	url = flywayProps['spring.datasource.url']
@@ -47,7 +47,7 @@ flyway {
 	password = flywayProps['spring.datasource.password']
 	locations = ['filesystem:src/main/resources/db/migration']
 	baselineOnMigrate = true
-}
+}*/
 
 tasks.named('test') {
 	useJUnitPlatform()
