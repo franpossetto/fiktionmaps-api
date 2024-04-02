@@ -1,0 +1,84 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: App mesh definitions
+
+Parameters:
+  EnvironmentName:
+    Type: String
+    Default: prod
+    Description: "A name that will be used for namespacing our cluster resources."
+
+Resources:
+  #############################################
+  # backend: AppMesh virtual services & router
+  #############################################
+  backendVirtualService:
+    Type: AWS::AppMesh::VirtualService
+    DependsOn:
+      - backendAppVirtualNode
+    Properties:
+      MeshName:
+        Fn::ImportValue: !Sub ${EnvironmentName}-AppMeshName
+      VirtualServiceName: !Join
+        - "."
+        - - "backend-service"
+          - Fn::ImportValue: !Sub ${EnvironmentName}-MeshCloudMapNamespace
+      Spec:
+        Provider:
+          VirtualNode:
+            VirtualNodeName: backend-service-vn
+
+  backendAppVirtualNode:
+    Type: AWS::AppMesh::VirtualNode
+    Properties:
+      MeshName:
+        Fn::ImportValue: !Sub ${EnvironmentName}-AppMeshName
+      VirtualNodeName: backend-service-vn
+      Spec:
+        Backends:
+          - VirtualService:
+              VirtualServiceName: backend-service.ecs.dev
+        Listeners:
+          - PortMapping:
+              Port: 8080
+              Protocol: http
+            HealthCheck:
+              Protocol: http
+              Path: /health-check
+              HealthyThreshold: 2
+              UnhealthyThreshold: 5
+              TimeoutMillis: 60000
+              IntervalMillis: 90000
+        ServiceDiscovery:
+          AWSCloudMap:
+            NamespaceName: !Sub ecs.${EnvironmentName}
+            ServiceName: backend-service
+
+Outputs:
+  backendAppVirtualNode:
+    Description: Virtual node for backend dev
+    Value:
+      Fn::GetAtt:
+        - backendAppVirtualNode
+        - VirtualNodeName
+    Export:
+      Name: !Sub ${EnvironmentName}-backend-service-backendAppVirtualNodeName
+  backendAppVirtualNodePath:
+    Description: Virtual node path for backend dev
+    Value: !Join
+      - "/"
+      - - "mesh"
+        - Fn::ImportValue: !Sub ${EnvironmentName}-AppMeshName
+        - "virtualNode"
+        - Fn::GetAtt:
+            - backendAppVirtualNode
+            - VirtualNodeName
+    Export:
+      Name: !Sub ${EnvironmentName}-backend-service-backendAppVirtualNodePath
+  backendAppVirtualNodeArn:
+    Description: Virtual node arn for backend dev
+    Value:
+      Fn::GetAtt:
+        - backendAppVirtualNode
+        - Arn
+    Export:
+      Name: !Sub ${EnvironmentName}-backend-service-backendAppVirtualNodeArn

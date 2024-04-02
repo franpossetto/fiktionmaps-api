@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: create IAM roles for ECS usage upfront
+Parameters:
+  EnvironmentName:
+    Type: String
+    Default: prod
+    Description: "A name that will be used for namespacing all cluster resources."
+
+Resources:
+  ECSTaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${EnvironmentName}-ecs-backend-task-role
+      Description: "Allows ECS tasks to call AWS services on your behalf."
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ecs-tasks.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      Policies:
+        - PolicyName: AmazonECSTaskRolePolicy
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  # Cloudwatch
+                  - "cloudwatch:PutMetricData"
+                  - "ec2:DescribeVolumes"
+                  - "ec2:DescribeTags"
+                  - "logs:PutLogEvents"
+                  - "logs:DescribeLogStreams"
+                  - "logs:DescribeLogGroups"
+                  - "logs:CreateLogStream"
+                  - "logs:CreateLogGroup"
+                  # XRay
+                  - "xray:PutTraceSegments"
+                  - "xray:PutTelemetryRecords"
+                  - "xray:GetSamplingRules"
+                  - "xray:GetSamplingTargets"
+                  - "xray:GetSamplingStatisticSummaries"
+                  # SSM
+                  - "ssm:*"
+                  - "secretsmanager:GetSecretValue"
+                  - "kms:Decrypt"
+                  # Envoy App mesh
+                  - "appmesh:*"
+                  # SQS
+                  - "sqs:*"
+                  # S3
+                  - "s3:*"
+                  # SNS
+                  - "sns:*"
+                Resource: "*"
+
+Outputs:
+  ECSTaskRole:
+    Description: The ARN of the ECS role task
+    Value: !GetAtt "ECSTaskRole.Arn"
+    Export:
+      Name: !Sub ${EnvironmentName}-ecs-backend-task-role

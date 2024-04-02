@@ -21,4 +21,5 @@ public class CityDTO {
     private String provider;
     private String code;
     private List<LocationDTO> locations = new ArrayList<>();
+    private Long amountOfPlaces;
 }

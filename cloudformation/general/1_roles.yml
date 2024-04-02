@@ -1,0 +1,132 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: create IAM roles for ECS usage upfront
+Parameters:
+  EnvironmentName:
+    Type: String
+    Default: prod
+    Description: "A name that will be used for namespacing all cluster resources."
+
+Resources:
+  AutoscalingRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${EnvironmentName}-autoscaling-role
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [application-autoscaling.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      Policies:
+        - PolicyName: service-autoscaling
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - application-autoscaling:*
+                  - cloudwatch:DescribeAlarms
+                  - cloudwatch:PutMetricAlarm
+                  - cloudwatch:DeleteAlarms
+                  - ecs:DescribeServices
+                  - ecs:UpdateService
+                Resource: "*"
+
+  ECSRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${EnvironmentName}-ecs-role
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ecs.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      Policies:
+        - PolicyName: ecs-service
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  # Rules which allow ECS to attach network interfaces to instances
+                  # on your behalf in order for awsvpc networking mode to work right
+                  - "ec2:AttachNetworkInterface"
+                  - "ec2:CreateNetworkInterface"
+                  - "ec2:CreateNetworkInterfacePermission"
+                  - "ec2:DeleteNetworkInterface"
+                  - "ec2:DeleteNetworkInterfacePermission"
+                  - "ec2:Describe*"
+                  - "ec2:DetachNetworkInterface"
+                  # Rules which allow ECS to update load balancers on your behalf
+                  # with the information sabout how to send traffic to your containers
+                  - "elasticloadbalancing:DeregisterInstancesFromLoadBalancer"
+                  - "elasticloadbalancing:DeregisterTargets"
+                  - "elasticloadbalancing:Describe*"
+                  - "elasticloadbalancing:RegisterInstancesWithLoadBalancer"
+                  - "elasticloadbalancing:RegisterTargets"
+                  # SSM
+                  - "ssm:*"
+                  - "secretsmanager:GetSecretValue"
+                  - "kms:Decrypt"
+                Resource: "*"
+
+  ECSTaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${EnvironmentName}-ecs-task-execution-role
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ecs-tasks.amazonaws.com]
+            Action: ["sts:AssumeRole"]
+      Path: /
+      Policies:
+        - PolicyName: AmazonECSTaskExecutionRolePolicy
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  # Allow the ECS Tasks to download images from ECR
+                  - "ecr:GetAuthorizationToken"
+                  - "ecr:BatchCheckLayerAvailability"
+                  - "ecr:GetDownloadUrlForLayer"
+                  - "ecr:BatchGetImage"
+                  # Allow the ECS tasks to upload logs to CloudWatch
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                  # Use SSM to get envs
+                  - "secretsmanager:GetSecretValue"
+                  - "ssm:GetParameters"
+                  - "kms:Decrypt"
+                  # Xray daemon write access
+                  - "xray:PutTraceSegments"
+                  - "xray:PutTelemetryRecords"
+                  - "xray:GetSamplingRules"
+                  - "xray:GetSamplingTargets"
+                  - "xray:GetSamplingStatisticSummaries"
+                  # Envoy App mesh
+                  - "appmesh:*"
+                  # SSM
+                  - "ssm:*"
+                  - "secretsmanager:GetSecretValue"
+                  - "kms:Decrypt"
+                Resource: "*"
+
+Outputs:
+  AutoscalingRole:
+    Description: The ARN of the role used for autoscaling
+    Value: !GetAtt "AutoscalingRole.Arn"
+    Export:
+      Name: !Sub ${EnvironmentName}-autoscaling-role
+  ECSRole:
+    Description: The ARN of the ECS role
+    Value: !GetAtt "ECSRole.Arn"
+    Export:
+      Name: !Sub ${EnvironmentName}-ecs-role
+  ECSTaskExecutionRole:
+    Description: The ARN of the ECS role
+    Value: !GetAtt "ECSTaskExecutionRole.Arn"
+    Export:
+      Name: !Sub ${EnvironmentName}-ecs-task-execution-role

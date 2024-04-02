@@ -1,0 +1,258 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: container on ecs cluster
+
+Parameters:
+  EnvironmentName:
+    Type: String
+    Default: prod
+    Description: "A name that will be used for namespacing our cluster resources."
+  ServiceName:
+    Type: String
+    Default: backend-service
+    Description: A name for the service
+  ImageUrl:
+    Type: String
+    Default: 637423212230.dkr.ecr.us-east-2.amazonaws.com/fiktionmaps
+    Description:
+      The url of a docker image that contains the application process that
+      will handle the traffic for this service
+  ContainerPort:
+    Type: Number
+    Default: 8080
+    Description: What port number the application inside the docker container is binding to
+  TaskCpu:
+    Type: Number
+    Default: 512
+    Description: How much CPU to give the container. 1024 is 1 CPU
+  TaskMemory:
+    Type: Number
+    Default: 1024
+    Description: How much memory in megabytes to give the container
+  ContainerCpu:
+    Type: Number
+    Default: 384
+    Description: How much CPU to give the container. 1024 is 1 CPU
+  ContainerMemory:
+    Type: Number
+    Default: 512
+    Description: How much memory in megabytes to give the container
+  Priority:
+    Type: Number
+    Default: 1
+    Description: The priority for the routing rule added to the load balancer.
+      This only applies if your have multiple services which have been
+      assigned to different paths on the load balancer.
+  DesiredCount:
+    Type: Number
+    Default: 1
+    Description: How many copies of the service task to run
+  Path:
+    Type: String
+    Default: "/*"
+    Description: A path on the load balancer that this service
+      should be connected to. Use * to send all load balancer
+      traffic to this service.
+
+Resources:
+  Task:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Sub ${EnvironmentName}-${ServiceName}-taskdefinition
+      Cpu: !Ref "TaskCpu"
+      Memory: !Ref "TaskMemory"
+      RuntimePlatform:
+        CpuArchitecture: "ARM64"
+        OperatingSystemFamily: "LINUX"
+      RequiresCompatibilities:
+        - FARGATE
+      NetworkMode: awsvpc
+      ProxyConfiguration:
+        Type: APPMESH
+        ContainerName: envoy
+        ProxyConfigurationProperties:
+          - Name: IgnoredUID
+            Value: 1337
+          - Name: ProxyIngressPort
+            Value: 15000
+          - Name: ProxyEgressPort
+            Value: 15001
+          - Name: AppPorts
+            Value: 8080
+      ExecutionRoleArn:
+        Fn::ImportValue: !Sub ${EnvironmentName}-ecs-task-execution-role
+      TaskRoleArn:
+        Fn::ImportValue: !Sub ${EnvironmentName}-ecs-backend-task-role
+      ContainerDefinitions:
+        - Name: !Ref "ServiceName"
+          Cpu: !Ref ContainerCpu
+          Memory: !Ref ContainerMemory
+          Image: !Ref "ImageUrl"
+          Essential: true
+          DependsOn:
+            - ContainerName: envoy
+              Condition: HEALTHY
+          Environment:
+            - Name: AWS_XRAY_TRACING_NAME
+              Value: !Sub ${EnvironmentName}-backend-service
+            - Name: ENABLE_XRAY_TRACING
+              Value: 1
+            - Name: SPRING_PORT
+              Value: 8080
+          Secrets:
+            - Name: POSTGRES_USER
+              ValueFrom: !Sub ${EnvironmentName}-db-user
+            - Name: POSTGRES_PASSWORD
+              ValueFrom: !Sub ${EnvironmentName}-db-password
+            - Name: POSTGRES_DATASOURCE_URL
+              ValueFrom: !Sub ${EnvironmentName}-db-datasource-url
+            - Name: SPRING_PROFILE
+              ValueFrom: !Sub ${EnvironmentName}-spring-profile
+          PortMappings:
+            - ContainerPort: !Ref "ContainerPort"
+              Protocol: tcp
+          Ulimits:
+            - HardLimit: 65535
+              Name: "nofile"
+              SoftLimit: 65535
+          LogConfiguration:
+            LogDriver: "awslogs"
+            Options:
+              awslogs-group: !Sub ${EnvironmentName}-apis
+              awslogs-region: !Ref "AWS::Region"
+              awslogs-stream-prefix: !Sub "[${ServiceName}]"
+        - Name: xray-daemon
+          Image: amazon/aws-xray-daemon
+          PortMappings:
+            - ContainerPort: 2000
+              Protocol: udp
+          command:
+            - "--log-level=error"
+          Cpu: 32
+          Memory: 256
+          LogConfiguration:
+            LogDriver: "awslogs"
+            Options:
+              awslogs-group: !Sub ${EnvironmentName}-apis
+              awslogs-region: !Ref "AWS::Region"
+              awslogs-stream-prefix: !Sub "[${ServiceName}][xray]"
+        - Name: envoy
+          User: 1337
+          Essential: true
+          Image: public.ecr.aws/appmesh/aws-appmesh-envoy:v1.24.1.0-prod
+          Memory: 256
+          Environment:
+            - Name: APPMESH_RESOURCE_ARN
+              Value:
+                Fn::ImportValue: !Sub ${EnvironmentName}-backend-service-backendAppVirtualNodeArn
+            - Name: ENABLE_ENVOY_XRAY_TRACING
+              Value: 1
+            - Name: ENABLE_ENVOY_STATS_TAGS
+              Value: 1
+            - Name: ENVOY_LOG_LEVEL
+              Value: "off"
+          HealthCheck:
+            Command:
+              - "CMD-SHELL"
+              - "curl -s http://localhost:9901/server_info | grep state | grep -q LIVE"
+            Interval: 5
+            Timeout: 2
+            Retries: 3
+          LogConfiguration:
+            LogDriver: "awslogs"
+            Options:
+              awslogs-group: !Sub ${EnvironmentName}-apis
+              awslogs-region: !Ref "AWS::Region"
+              awslogs-stream-prefix: !Sub "[${ServiceName}][envoy]"
+
+  DiscoveryService:
+    Type: AWS::ServiceDiscovery::Service
+    Properties:
+      Description: Discovery Service for the Demo Application
+      DnsConfig:
+        RoutingPolicy: MULTIVALUE
+        DnsRecords:
+          - TTL: 60
+            Type: A
+          - TTL: 60
+            Type: SRV
+      HealthCheckCustomConfig:
+        FailureThreshold: 10
+      Name: !Ref "ServiceName"
+      NamespaceId:
+        Fn::ImportValue: !Sub ${EnvironmentName}-PrivateNamespace
+
+  Service:
+    Type: AWS::ECS::Service
+    DependsOn:
+      - ListenerRule
+      - DiscoveryService
+    Properties:
+      ServiceName: !Sub ${EnvironmentName}-${ServiceName}
+      Cluster:
+        Fn::ImportValue: !Sub ${EnvironmentName}-ClusterName
+      TaskDefinition: !Ref Task
+      LaunchType: FARGATE
+      DesiredCount: !Ref "DesiredCount"
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      ServiceRegistries:
+        - RegistryArn: !GetAtt DiscoveryService.Arn
+          Port: 8080
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+            - Fn::ImportValue: !Sub ${EnvironmentName}-ContainerSecurityGroup
+          Subnets:
+            - Fn::ImportValue: !Sub ${EnvironmentName}-PublicSubnetOne
+            - Fn::ImportValue: !Sub ${EnvironmentName}-PublicSubnetTwo
+      LoadBalancers:
+        - ContainerName: !Ref "ServiceName"
+          ContainerPort: !Ref "ContainerPort"
+          TargetGroupArn: !Ref TargetGroup
+
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: !Sub ${EnvironmentName}-${ServiceName}-target
+      VpcId:
+        Fn::ImportValue: !Sub ${EnvironmentName}-VpcId
+      Port: !Ref "ContainerPort"
+      Protocol: HTTP
+      Matcher:
+        HttpCode: 200-299
+      HealthCheckPort: traffic-port
+      HealthCheckPath: /healthCheck
+      HealthCheckProtocol: HTTP
+      HealthCheckIntervalSeconds: 90
+      HealthCheckTimeoutSeconds: 60
+      HealthyThresholdCount: 5
+      UnhealthyThresholdCount: 5
+      TargetType: ip
+
+  ListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      ListenerArn:
+        Fn::ImportValue: !Sub ${EnvironmentName}-Listener
+      Priority: !Ref Priority
+      Conditions:
+        - Field: path-pattern
+          Values:
+            - !Ref Path
+      Actions:
+        - TargetGroupArn: !Ref TargetGroup
+          Type: forward
+
+Outputs:
+  ApiEndpoint:
+    Description: backend API Endpoint
+    Value: !Join
+      - ""
+      - - "http://"
+        - Fn::ImportValue: !Sub ${EnvironmentName}-DomainName
+        - "/"
+        - !Ref "Path"
+    Export:
+      Name: !Sub ${EnvironmentName}-${ServiceName}-ExternalUrl

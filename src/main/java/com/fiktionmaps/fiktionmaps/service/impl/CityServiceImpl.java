@@ -9,7 +9,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CityServiceImpl implements CityService {
@@ -47,6 +49,21 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public List<CityDTO> getAll() {
-        return cityMapper.toDtoList(cityRepository.findAll());
+        List<CityDTO> cityDTOs = cityMapper.toDtoList(cityRepository.findAll());
+        List<Object[]> amountOfPlaces = cityRepository.countPlacesInCities();
+
+        Map<Long, Long> placesCountMap = amountOfPlaces.stream()
+                .collect(Collectors.toMap(
+                        record -> (Long) record[0],
+                        record -> (Long) record[1]
+                ));
+
+        cityDTOs.forEach(cityDTO -> {
+            Long count = placesCountMap.getOrDefault(cityDTO.getId(), 0L);
+            cityDTO.setAmountOfPlaces(count);
+        });
+
+        return cityDTOs;
     }
+
 }
