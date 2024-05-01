@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"fiction", "location", "scenes", "user"})
 public class Place {
 
     @Id

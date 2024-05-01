@@ -20,4 +20,9 @@ public interface PlaceService {
     List<PlaceDTO> getMyPlacesNotApproved();
 
     PlaceDTO approve(Long id, Long cityId);
+    List<PlaceDTO> getPlacesByFictionAndLocation(Long fictionId,
+                                                 Double leftLatitude,
+                                                 Double rightLatitude,
+                                                 Double topLongitude,
+                                                 Double bottomLongitude);
 }

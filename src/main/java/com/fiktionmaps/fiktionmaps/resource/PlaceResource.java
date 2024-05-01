@@ -1,14 +1,14 @@
 package com.fiktionmaps.fiktionmaps.resource;
 
 import com.fiktionmaps.fiktionmaps.mapper.PlaceMapper;
-import com.fiktionmaps.fiktionmaps.model.City;
-import com.fiktionmaps.fiktionmaps.model.Location;
 import com.fiktionmaps.fiktionmaps.model.Place;
 import com.fiktionmaps.fiktionmaps.repository.PlaceRepository;
 import com.fiktionmaps.fiktionmaps.service.PlaceService;
 import com.fiktionmaps.fiktionmaps.service.UserService;
-import com.fiktionmaps.fiktionmaps.service.dto.LocationDTO;
 import com.fiktionmaps.fiktionmaps.service.dto.PlaceDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,26 +45,37 @@ public class PlaceResource {
     @GetMapping
     @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<PlaceDTO>> getFilteredPlaces(@RequestParam(required = false) Boolean approved){
-        List<Place> places;
+    public ResponseEntity<Page<PlaceDTO>> getFilteredPlaces(@RequestParam(required = false) Boolean approved,
+                                                            @RequestParam(defaultValue = "0") Integer page,
+                                                            @RequestParam(defaultValue = "10") Integer size) {
+        Page<Place> places;
+
         if (approved != null) {
+            Pageable pageable = PageRequest.of(page-1, size);
             if (approved) {
-                places = placeRepository.findByPublished();
+                places = placeRepository.findByPublished(pageable);
+                return new ResponseEntity<>(places.map(placeMapper::toDto), HttpStatus.OK);
             } else {
-                places = placeRepository.findByNotPublished();
+                places = placeRepository.findByNotPublished(pageable);
+                return new ResponseEntity<>(places.map(placeMapper::toDto), HttpStatus.OK);
             }
         } else {
-            places = placeRepository.findAll();
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(placeMapper.toDtoList(places), HttpStatus.OK);
     }
 
     @GetMapping("/user")
     @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<PlaceDTO>> getPlacesByUser(@RequestHeader("Authorization") String token){
-        List<Place> places = placeRepository.getPlacesByUserId(userService.getUserFromToken(token).getId());
-        return new ResponseEntity<>(placeMapper.toDtoList(places), HttpStatus.OK);
+    public ResponseEntity<Page<PlaceDTO>> getPlacesByUser(@RequestHeader("Authorization") String token,
+                                                          @RequestParam(defaultValue = "0") Integer page,
+                                                          @RequestParam(defaultValue = "10") Integer size){
+
+        Pageable pageable = PageRequest.of(page-1, size);
+        Long userId = userService.getUserFromToken(token).getId();
+        Page<Place> placePage = placeRepository.getPlacesByUserId(userId, pageable);
+
+        return new ResponseEntity<>(placePage.map(placeMapper::toDto), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

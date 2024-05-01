@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/v1/fictions")
 public class FictionResource {
 
@@ -66,11 +67,26 @@ public class FictionResource {
     @PostMapping("/{id}/places")
     @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<PlaceDTO> addPlaceToFiction(@RequestHeader("Authorization") String token, @PathVariable Long id, @RequestBody PlaceDTO placeDTO) throws FirebaseAuthException {
+    public ResponseEntity<PlaceDTO> addPlaceToFiction(@RequestHeader("Authorization") String token, @PathVariable Long id, @RequestBody PlaceDTO placeDTO) {
+
         Long userId = userService.getUserFromToken(token).getId();
         placeDTO.setUserId(userId);
         Fiction fiction = fictionService.findById(id);
         PlaceDTO createdPlace = placeService.create(placeDTO, fiction);
         return ResponseEntity.ok(createdPlace);
+    }
+
+    @GetMapping("/places/{fictionId}")
+    @CrossOrigin
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<PlaceDTO>> getPlacesByLatitudeAndLongitude(
+            @PathVariable Long fictionId,
+            @RequestParam Double leftLatitude,
+            @RequestParam Double rightLatitude,
+            @RequestParam Double topLongitude,
+            @RequestParam Double bottomLongitude) {
+
+            List<PlaceDTO> result = placeService.getPlacesByFictionAndLocation(fictionId, leftLatitude, rightLatitude, topLongitude, bottomLongitude);
+            return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

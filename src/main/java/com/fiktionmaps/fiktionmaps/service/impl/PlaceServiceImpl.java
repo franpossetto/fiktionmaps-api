@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PlaceServiceImpl implements PlaceService {
-    private PlaceRepository placeRepository;
-    private PlaceMapper placeMapper;
-    private LocationMapper locationMapper;
-    private LocationRepository locationRepository;
+    private final PlaceRepository placeRepository;
+    private final PlaceMapper placeMapper;
+    private final LocationMapper locationMapper;
+    private final LocationRepository locationRepository;
 
     public PlaceServiceImpl(PlaceRepository placeRepository, PlaceMapper placeMapper, LocationMapper locationMapper, LocationRepository locationRepository){
         this.placeRepository=placeRepository;
@@ -133,5 +134,21 @@ public class PlaceServiceImpl implements PlaceService {
         return null;
     }
 
+
+    @Override
+    public List<PlaceDTO> getPlacesByFictionAndLocation(Long fictionId,
+                                                        Double leftLatitude,
+                                                        Double rightLatitude,
+                                                        Double topLongitude,
+                                                        Double bottomLongitude) {
+        List<Place> places = placeRepository.findPlacesByFictionAndLocation(fictionId,
+                                                                            leftLatitude,
+                                                                            rightLatitude,
+                                                                            topLongitude,
+                                                                            bottomLongitude);
+        return places.stream()
+                .map(placeMapper::toDto)
+                .collect(Collectors.toList());
+    }
 
 }
