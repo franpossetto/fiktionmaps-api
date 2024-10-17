@@ -1,5 +1,7 @@
 package com.fiktionmaps.fiktionmaps.service.impl;
 
+import com.fiktionmaps.fiktionmaps.dto.PlaceByAreaRequestDTO;
+import com.fiktionmaps.fiktionmaps.dto.PlaceByAreaResponseDTO;
 import com.fiktionmaps.fiktionmaps.mapper.LocationMapper;
 import com.fiktionmaps.fiktionmaps.mapper.PlaceMapper;
 import com.fiktionmaps.fiktionmaps.model.*;
@@ -151,4 +153,24 @@ public class PlaceServiceImpl implements PlaceService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<Place> findByArea(PlaceByAreaRequestDTO placeByAreaRequestDTO) {
+        double upperLat = placeByAreaRequestDTO.getUpperLat();
+        double rightLng = placeByAreaRequestDTO.getRightLng();
+
+        double lowerLat = placeByAreaRequestDTO.getLowerLat();
+        double leftLng = placeByAreaRequestDTO.getLeftLng();
+
+
+        Optional<Long> fictionId = Optional.ofNullable(placeByAreaRequestDTO.getFictionId());
+
+        if (fictionId.isPresent()) {
+            return placeRepository.findByFictionIdAndCoordinatesBetween(
+                    fictionId.get(), lowerLat, upperLat, leftLng, rightLng
+            );
+        } else {
+            return placeRepository.findByCoordinatesBetween(lowerLat, upperLat, leftLng, rightLng);
+        }
+
+    }
 }

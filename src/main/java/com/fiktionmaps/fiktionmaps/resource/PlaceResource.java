@@ -1,5 +1,7 @@
 package com.fiktionmaps.fiktionmaps.resource;
 
+import com.fiktionmaps.fiktionmaps.dto.PlaceByAreaRequestDTO;
+import com.fiktionmaps.fiktionmaps.dto.PlaceByAreaResponseDTO;
 import com.fiktionmaps.fiktionmaps.mapper.PlaceMapper;
 import com.fiktionmaps.fiktionmaps.model.Place;
 import com.fiktionmaps.fiktionmaps.repository.PlaceRepository;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/places")
@@ -33,14 +36,6 @@ public class PlaceResource {
         this.placeService = placeService;
         this.userService = userService;
     }
-
-//    @GetMapping
-//    @CrossOrigin
-//    @ResponseStatus(HttpStatus.OK)
-//    public ResponseEntity<List<PlaceDTO>> getPlaces(){
-//        List<Place> places = placeRepository.findAll();
-//        return new ResponseEntity<>(placeMapper.toDtoList(places), HttpStatus.OK);
-//    }
 
     @GetMapping
     @CrossOrigin
@@ -62,6 +57,37 @@ public class PlaceResource {
         } else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
+    }
+
+
+    @GetMapping("/map")
+    @CrossOrigin
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<PlaceByAreaResponseDTO>> GetPlacesByArea(
+            @RequestParam double upperLat,
+            @RequestParam double lowerLat,
+            @RequestParam double rightLng,
+            @RequestParam double leftLng,
+            @RequestParam(required = false) Long fictionId) {
+
+        PlaceByAreaRequestDTO placeByAreaRequestDTO = new PlaceByAreaRequestDTO(upperLat, lowerLat, rightLng, leftLng, fictionId);
+
+        List<Place> places = placeService.findByArea(placeByAreaRequestDTO);
+
+        List<PlaceByAreaResponseDTO> responseDTOs = places.stream()
+                .map(this::mapToPlaceByAreaResponseDTO)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(responseDTOs, HttpStatus.OK);
+
+    }
+
+    private PlaceByAreaResponseDTO mapToPlaceByAreaResponseDTO(Place place) {
+        PlaceByAreaResponseDTO responseDTO = new PlaceByAreaResponseDTO();
+        responseDTO.setPlaceId(place.getId());
+        responseDTO.setLatitude(place.getLocation().getLatitude());
+        responseDTO.setLongitude(place.getLocation().getLongitude());
+        return responseDTO;
     }
 
     @GetMapping("/user")
@@ -110,4 +136,7 @@ public class PlaceResource {
             return ResponseEntity.ok(p);
         }
     }
+
+
+
 }

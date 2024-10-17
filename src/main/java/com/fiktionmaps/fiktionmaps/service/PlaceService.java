@@ -1,6 +1,8 @@
 package com.fiktionmaps.fiktionmaps.service;
 
+import com.fiktionmaps.fiktionmaps.dto.PlaceByAreaRequestDTO;
 import com.fiktionmaps.fiktionmaps.model.Fiction;
+import com.fiktionmaps.fiktionmaps.model.Place;
 import com.fiktionmaps.fiktionmaps.service.dto.PlaceDTO;
 
 import java.util.List;
@@ -25,4 +27,6 @@ public interface PlaceService {
                                                  Double rightLatitude,
                                                  Double topLongitude,
                                                  Double bottomLongitude);
+
+    List<Place> findByArea(PlaceByAreaRequestDTO placeByAreaRequestDTO);
 }

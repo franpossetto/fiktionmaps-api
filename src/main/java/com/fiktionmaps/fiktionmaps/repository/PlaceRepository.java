@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public interface PlaceRepository extends JpaRepository<Place, Long> {
@@ -26,6 +27,10 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
                                                Double topLongitude,
                                                Double bottomLongitude);
 
+    @Query("SELECT p FROM Place p WHERE p.location.latitude BETWEEN :lowerLat AND :upperLat AND p.location.longitude BETWEEN :leftLng AND :rightLng")
+    List<Place> findByCoordinatesBetween(double lowerLat, double upperLat, double leftLng, double rightLng);
 
+    @Query("SELECT p FROM Place p WHERE p.fiction.id = :fictionId AND p.location.latitude BETWEEN :lowerLat AND :upperLat AND p.location.longitude BETWEEN :leftLng AND :rightLng")
+    List<Place> findByFictionIdAndCoordinatesBetween(Long fictionId, double lowerLat, double upperLat, double leftLng, double rightLng);
 
 }
