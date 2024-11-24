@@ -137,6 +137,18 @@ public class PlaceResource {
         }
     }
 
+    @GetMapping("/{id}")
+    @CrossOrigin
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<PlaceDTO> getPlaceById(@PathVariable Long id) {
+        Place place = placeRepository.findById(id).orElse(null);
+        if (place == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        PlaceDTO placeDTO = placeMapper.toDto(place);
+        return new ResponseEntity<>(placeDTO, HttpStatus.OK);
+    }
+
 
 
 }
