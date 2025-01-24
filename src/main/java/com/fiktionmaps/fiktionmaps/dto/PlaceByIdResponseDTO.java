@@ -1,19 +1,15 @@
-package com.fiktionmaps.fiktionmaps.service.dto;
+package com.fiktionmaps.fiktionmaps.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import com.fiktionmaps.fiktionmaps.service.dto.LocationDTO;
+import com.fiktionmaps.fiktionmaps.service.dto.SceneDTO;
 
 import java.util.List;
 
-@Getter
-@Setter
-@AllArgsConstructor
-public class PlaceDTO {
+public class PlaceByIdResponseDTO {
     private Long id;
     private String name;
     private String description;
-    private String fictionId;
+    private String fictionName;
     private LocationDTO location;
     private List<SceneDTO> scenes;
     private String screenshot;

@@ -1,6 +1,4 @@
 package com.fiktionmaps.fiktionmaps.resource;
-
-import com.fiktionmaps.fiktionmaps.config.JwtService;
 import com.fiktionmaps.fiktionmaps.mapper.FictionMapper;
 import com.fiktionmaps.fiktionmaps.model.Fiction;
 import com.fiktionmaps.fiktionmaps.service.FictionService;
@@ -8,14 +6,11 @@ import com.fiktionmaps.fiktionmaps.service.PlaceService;
 import com.fiktionmaps.fiktionmaps.service.UserService;
 import com.fiktionmaps.fiktionmaps.service.dto.FictionDTO;
 import com.fiktionmaps.fiktionmaps.service.dto.PlaceDTO;
-import com.fiktionmaps.fiktionmaps.service.impl.UserServiceImpl;
-import com.google.firebase.auth.FirebaseAuthException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")

@@ -5,7 +5,7 @@ services:
     environment:
       - POSTGRES_USER=francisco
       - POSTGRES_PASSWORD=francisco
-      - POSTGRES_DB=fiktionmaps2
+      - POSTGRES_DB=fiktionmaps
       - POSTGRES_HOST=localhost
     ports:
       - 5432:5432
@@ -23,6 +23,6 @@ services:
     depends_on:
       - db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/fiktionmaps2
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/fiktionmaps
       - SPRING_DATASOURCE_USERNAME=francisco
       - SPRING_DATASOURCE_PASSWORD=francisco
