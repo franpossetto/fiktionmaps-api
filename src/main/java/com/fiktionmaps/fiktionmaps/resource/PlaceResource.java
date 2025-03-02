@@ -87,6 +87,7 @@ public class PlaceResource {
         responseDTO.setPlaceId(place.getId());
         responseDTO.setLatitude(place.getLocation().getLatitude());
         responseDTO.setLongitude(place.getLocation().getLongitude());
+        responseDTO.setScreenshot(place.getScreenshot());
         return responseDTO;
     }
 
