@@ -1,5 +1,7 @@
 package com.fiktionmaps.fiktionmaps.service;
 
+import com.fiktionmaps.fiktionmaps.dto.FictionByAreaRequestDTO;
+import com.fiktionmaps.fiktionmaps.dto.FictionByAreaResponseDTO;
 import com.fiktionmaps.fiktionmaps.model.Fiction;
 import com.fiktionmaps.fiktionmaps.service.dto.CityDTO;
 import com.fiktionmaps.fiktionmaps.service.dto.FictionDTO;
@@ -21,4 +23,5 @@ public interface FictionService {
 
     Fiction findById(Long id);
 
+    List<FictionByAreaResponseDTO> findByCoordinatesBetween(FictionByAreaRequestDTO request);
 }

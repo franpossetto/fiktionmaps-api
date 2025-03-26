@@ -1,4 +1,6 @@
 package com.fiktionmaps.fiktionmaps.resource;
+import com.fiktionmaps.fiktionmaps.dto.FictionByAreaRequestDTO;
+import com.fiktionmaps.fiktionmaps.dto.FictionByAreaResponseDTO;
 import com.fiktionmaps.fiktionmaps.mapper.FictionMapper;
 import com.fiktionmaps.fiktionmaps.model.Fiction;
 import com.fiktionmaps.fiktionmaps.service.FictionService;
@@ -83,5 +85,19 @@ public class FictionResource {
 
             List<PlaceDTO> result = placeService.getPlacesByFictionAndLocation(fictionId, leftLatitude, rightLatitude, topLongitude, bottomLongitude);
             return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/map")
+    @CrossOrigin
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<FictionByAreaResponseDTO>> getFictionsByCoordinates(
+            @RequestParam double upperLat,
+            @RequestParam double lowerLat,
+            @RequestParam double rightLng,
+            @RequestParam double leftLng) {
+
+        FictionByAreaRequestDTO request = new FictionByAreaRequestDTO(upperLat, lowerLat, rightLng, leftLng);
+        List<FictionByAreaResponseDTO> result = fictionService.findByCoordinatesBetween(request);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

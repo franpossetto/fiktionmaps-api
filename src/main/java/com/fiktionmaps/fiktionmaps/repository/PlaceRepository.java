@@ -1,15 +1,12 @@
 package com.fiktionmaps.fiktionmaps.repository;
 
 import com.fiktionmaps.fiktionmaps.model.Place;
-import com.fiktionmaps.fiktionmaps.service.dto.PlaceDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public interface PlaceRepository extends JpaRepository<Place, Long> {
     Page<Place> getPlacesByUserId(Long userId, Pageable pageable);

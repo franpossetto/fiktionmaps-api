@@ -20,4 +20,9 @@ public interface FictionRepository extends JpaRepository<Fiction, Long> {
     @Query("SELECT DISTINCT f FROM Fiction f JOIN f.places p WHERE p.location.city.id = :cityId")
     List<Fiction> findByCityId(@Param("cityId") Long fictionId);
 
+    @Query("SELECT DISTINCT f FROM Fiction f JOIN f.places p WHERE p.location.latitude BETWEEN :lowerLat AND :upperLat AND p.location.longitude BETWEEN :leftLng AND :rightLng")
+    List<Fiction> findByCoordinatesBetween(@Param("lowerLat") double lowerLat, 
+                                         @Param("upperLat") double upperLat, 
+                                         @Param("leftLng") double leftLng, 
+                                         @Param("rightLng") double rightLng);
 }
