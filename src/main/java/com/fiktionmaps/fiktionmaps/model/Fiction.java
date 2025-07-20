@@ -39,6 +39,9 @@ public class Fiction {
     @OneToMany(mappedBy = "fiction", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Place> places = new ArrayList<>();
 
+    @OneToMany(mappedBy = "fiction", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Interest> interests = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "created_by")
     private User user;
